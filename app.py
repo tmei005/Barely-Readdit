@@ -5,11 +5,10 @@ import datetime
 import time
 from textblob import TextBlob
 import os
-
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from textblob.wordnet import Synset
+# from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -92,6 +91,8 @@ def fetch_post_info(topic, sort='hot', limit=5):
         title = submission.title
         full_text = title + " " + submission.selftext
         topic_summary += f"{index}. {full_text}"
+        url = submission.url
+        op = fetch_reddit_user_info(submission.author.name)
 
         message = TextBlob(full_text)
 
@@ -107,23 +108,21 @@ def fetch_post_info(topic, sort='hot', limit=5):
         # Stores post data to dictionary
         post_data = {
             "subreddit": submission.subreddit.display_name,
-            "redditor": submission.author.name,
-            "redditor icon": submission.author.icon_img,
+            "op": op,
             "title": title,
-            "url": submission.url,
+            "url": url,
             "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
         }
         topic_posts.append(post_data)
 
-    topic_summary = summarize(topic_summary, "topic")
+    # topic_summary = summarize(topic_summary, "topic")
 
     # Calculates the average polarity and subjectivity of the user's comments
-    post_average_polarity = aggregate_polarity/len(topic_posts)
-    post_average_subjectivity = aggregate_subjectivity/len(topic_posts)
-
-    return topic_posts, topic_summary, post_average_polarity, post_average_subjectivity
+    aggregate_polarity = aggregate_polarity/len(topic_posts)
+    aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
+    return summary, topic_posts, aggregate_polarity, aggregate_subjectivity
 
 # print(fetch_post_info("hachiware"))
 
@@ -136,7 +135,7 @@ def fetch_reddit_user_info(username, limit=20):
 
     user = reddit.redditor(username)
     username = user.name
-    icon_url = user.icon_img
+    icon_url = reddit.redditor(username).icon_img
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -176,14 +175,9 @@ def fetch_reddit_user_info(username, limit=20):
     user_average_polarity = aggregate_polarity/len(comments)
     user_average_subjectivity = aggregate_subjectivity/len(comments)
 
-    return username, icon_url, comments, top_3_subreddits, user_average_polarity, user_average_subjectivity
+    return username, icon_url, top_3_subreddits, user_average_polarity, user_average_subjectivity
 
-# print(fetch_reddit_user_info("segcymf"))
-
-def subreddit_matcher(topic, topic_summary):
-    
-
-
+# def subreddit_matcher(topic, topic_summary):    
     
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
@@ -202,18 +196,17 @@ def analyze():
     if not topic:
         return jsonify({"error": "Please provide a topic"}), 400
     sort = request.args.get('sort')
+    popularity_change = get_topic_popularity(topic)
     if sort != 'hot':
-        posts, topic_summary, post_aggregate_polarity, post_aggregate_subjectivity = fetch_post_info(topic, sort)
+        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
     else:
-        posts, topic_summary, post_aggregate_polarity, post_aggregate_subjectivity = fetch_post_info(topic)
-    
-    user_info, top_3_subreddits, user_average_polarity, user_average_subjectivity = fetch_reddit_user_info(posts[redditor])
-
+        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
     return jsonify({
         'topic': topic,
         'sort': sort,
+        'popularity_change':popularity_change,
         'posts': posts,
-        'topic_summary': topic_summary,
+        'topic_summary': summary,
         'aggregate_polarity': aggregate_polarity,
         'aggregate_subjectivity': aggregate_subjectivity
     })
