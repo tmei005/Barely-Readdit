@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS  # Import CORS
 import praw
+import datetime
+import time
 from textblob import TextBlob
 import os
 from google import genai
@@ -41,7 +43,34 @@ def summarize(text, type, image=None):
         contents=[text]
     )
     return response.text
-    
+
+# Get popularity trend
+def get_topic_popularity(topic):
+    """
+    Fetch post count for a given topic over the last 14 days 
+    and calculate percentage change from the previous week.
+    """
+    end_time = time.time()
+    one_week_ago = end_time - (7 * 24 * 60 * 60)
+    two_weeks_ago = one_week_ago - (7 * 24 * 60 * 60)
+
+    curr_count = 0
+    last_count = 0
+    for submission in reddit.subreddit("all").search(topic, sort="new"):  # Adjust limit as needed
+        if one_week_ago <= submission.created_utc <= end_time:
+            curr_count += 1
+        elif two_weeks_ago <= submission.created_utc <= one_week_ago:
+            last_count += 1
+        else:
+            break
+    # Calculate percentage change
+    if last_count > 0:
+        popularity_change = ((curr_count - last_count) / last_count) * 100
+    else:
+        popularity_change = 0  # Avoid division by zero
+    return popularity_change
+        
+# Get posts
 def fetch_post_info(topic, sort='hot', limit=5):
     """
     Fetch Reddit posts based on a topic.
@@ -51,6 +80,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
+    popularity_change = get_topic_popularity(topic)
 
     image_extensions = [".jpeg", ".png"]
 
@@ -63,12 +93,11 @@ def fetch_post_info(topic, sort='hot', limit=5):
 
         message = TextBlob(full_text)
 
-        # Retrieves the comment's polarity and subjectivity
         polarity = message.sentiment.polarity
         subjectivity = message.sentiment.subjectivity
 
         summary = summarize(full_text, "post")
-        print(summary)
+        # print(summary)
 
         aggregate_polarity += polarity
         aggregate_subjectivity += subjectivity
@@ -77,7 +106,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
         post_data = {
             "title": title,
             "url": url,
-            "summary": summary,
+            # "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
         }
@@ -89,7 +118,6 @@ def fetch_post_info(topic, sort='hot', limit=5):
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(posts_info)
     aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
-
     return posts_info, aggregate_polarity, aggregate_subjectivity
 
 print(fetch_post_info("hachiware"))
