@@ -2,50 +2,38 @@ document.getElementById("analyzeBtn").addEventListener("click", async function()
     const topic = document.getElementById("topicInput").value;
     console.log("Entered topic:", topic);
 
-    if (topic.trim() === "") {
-        alert("Please enter a topic to analyze.");
-        return;
-    }
-
-    // Clear previous results
-    document.getElementById("sentimentResult").innerHTML = "";
-    document.getElementById("redditPosts").innerHTML = "";
-
-    // Fetch data from the backend (your Flask server)
-    console.log("Fetching sentiment and Reddit posts for topic:", topic);
-
     try {
         const response = await fetch(`/analyze?topic=${encodeURIComponent(topic)}`);
-        console.log("Raw response:", response);
-         // Check if the response is OK (status code 200)
-        if (!response.ok) {
-            console.error("Failed to fetch data. Status:", response.status);
-            alert("Failed to fetch data from the server.");
-            return;
-        }
-        // Parse the JSON response
         const data = await response.json();
 
-        // Debug: Log the received data
-        console.log("Received data:", data);
-        if (data.sentiment) {
-            const { polarity, subjectivity } = data.sentiment;
-            document.getElementById("sentimentResult").innerHTML = `
-                Polarity: ${polarity} <br>
-                Subjectivity: ${subjectivity}
-            `;
-        } else {
-            document.getElementById("sentimentResult").innerHTML = "No sentiment data available.";
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
         }
 
-        if (data.redditPosts && data.redditPosts.length > 0) {
-            const postsList = data.redditPosts.map(post => `<li>${post}</li>`).join("");
-            document.getElementById("redditPosts").innerHTML = postsList;
+        console.log('Raw response:', data);
+
+        // Handle response data
+        if (data.error) {
+            alert(data.error);
         } else {
-            document.getElementById("redditPosts").innerHTML = "No Reddit posts found.";
+            const posts = data.posts;
+            const sentimentScores = data.sentiment_scores;
+            const aggregateSentiment = data.aggregate_sentiment;
+
+            // Display posts and sentiments
+            let output = '<h3>Reddit Posts:</h3>';
+            posts.forEach((post, index) => {
+                output += `<p><strong>Post ${index + 1}:</strong> ${post}</p>`;
+                output += `<p><strong>Sentiment Score:</strong> ${sentimentScores[index]}</p>`;
+            });
+
+            output += `<h4>Aggregate Sentiment Score: ${aggregateSentiment}</h4>`;
+
+            document.getElementById('result').innerHTML = output;
         }
     } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("There was an error fetching the data.");
+        console.error('Error fetching data:', error);
+        document.getElementById('loading').style.display = 'none';
+        alert('Error fetching data');
     }
 });
