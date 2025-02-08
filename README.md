@@ -1,23 +1,27 @@
 # Reddit-Sentiment-Analyzer
 
-Forking the application:
-1. git fork https://github.com/tmei005/Barely-Readdit/
+Barely Readdit
 
-Creating the Virtual Environment. 
-Type the following commands into the terminal:
-1. python -m venv venv
 
-2. For Window users: venv\Scripts\activate
+Description: With Barely Readdit, the user can search up a topic of interest on the interface and it’ll generate a list of Reddit posts that’s sorted based on the user’s choice of the following: relevance, hot, new, top, and comments. The topic will produce an average scoring of sentiment, subjectivity, and popularity from the posts listed. Under each Reddit post, it’ll provide a brief summary of the original posting along with a sentiment and subjectivity rating.
 
-3. 
+Steps on using Barely Readdit:
 
-Inserting necessary API keys:
-1. Create a .env file in the src directory (Literally it's just .env )
+Cloning Repository:
+1. https://github.com/tmei005/Barely-Readdit.git
 
-2. Insert the following variables and its respective values: 
-REDDIT_CLIENT_ID=
-REDDIT_CLIENT_SECRET=
-USER_AGENT=
-GEMINI_API_KEY=
+Create the virtual environment:
+python -m venv venv
+For Windows users use the command: venv\Scripts\activate
+For macOS/Linux users, use the command: venv/bin/activate
+pip install flask praw textblob python-dotenv flask-cors 
 
-3. Enter the variables into the respective 
+Running Application:
+Install node.js from the official website: https://nodejs.org/en
+Open an additional terminal
+1st terminal:
+cd client
+npm install
+npm start
+2nd terminal:
+python app.py
