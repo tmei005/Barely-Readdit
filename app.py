@@ -16,29 +16,39 @@ reddit = praw.Reddit(
     client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
     user_agent=os.getenv("REDDIT_USER_AGENT")
 )
+def summarize(text):
+    """
+    Provide a simple summary of the text.
+    For simplicity, we'll use the title as the summary.
+    """
+    return text
 
-def fetch_reddit_posts_and_sentiment(topic, limit=10):
+def fetch_post_info(topic, limit=20):
     """
     Fetch Reddit posts based on a topic.
     """
-    posts = []
-    sentiment_scores = []
+    posts_info = []
+    aggregate_sentiment = 0
 
     for submission in reddit.subreddit('all').search(topic, limit=limit):
-        posts.append(submission.title)
-        sentiment = analyze_sentiment(submission.title)
-        sentiment_scores.append(sentiment)
-    
-    return posts, sentiment_scores
-
-def analyze_sentiment(post_title):
-    """
-    Analyze the sentiment of a Reddit post using TextBlob.
-    Returns a sentiment polarity score.
-    """
-    analysis = TextBlob(post_title)
-    # Sentiment polarity ranges from -1 (negative) to 1 (positive)
-    return analysis.sentiment.polarity
+        title = submission.title
+        full_text = title + " " + submission.selftext
+        url = submission.url
+        polarity = full_text.polarity
+        summary = summarize(submission.selftext)  # Simplified summary using the title
+        sentiment_score = full_text.sentiment
+        aggregate_sentiment += sentiment_score
+        
+        post_data = {
+            "title": title,
+            "url": url,
+            "polarity": polarity,
+            "summary": summary,
+            "sentiment_score": sentiment_score
+        }
+        posts_info.append(post_data)
+    aggregate_sentiment = aggregate_sentiment/len(post_data)
+    return posts_info, aggregate_sentiment
 
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
@@ -49,21 +59,17 @@ def index():
 def static_file(path):
     return send_from_directory('client/src', path)
 
-@app.route('/analyze', methods=['GET'])
+@app.route('/analyze', methods=['POST'])
 def analyze():
     topic = request.args.get('topic')
     if not topic:
         return jsonify({"error": "Please provide a topic"}), 400
 
-    posts, sentiment_scores = fetch_reddit_posts_and_sentiment(topic)
+    posts, aggregate_sentiment = fetch_post_info(topic)
     
-    # Calculate the average sentiment score
-    aggregate_sentiment = sum(sentiment_scores) / len(sentiment_scores) if sentiment_scores else 0
-
     return jsonify({
         'topic': topic,
         'posts': posts,
-        'sentiment_scores': sentiment_scores,
         'aggregate_sentiment': aggregate_sentiment
     })
 
