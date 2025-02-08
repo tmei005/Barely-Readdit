@@ -28,7 +28,6 @@ reddit = praw.Reddit(
 # Initialize Gemini API
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-# TODO : Include overarching topic summary
 def summarize(text, type, image=None):
     """
     Summarizes the given message
@@ -37,7 +36,7 @@ def summarize(text, type, image=None):
     if type == "post":
         system_instruction="Provide a concise summary of the post and focus on key points and main ideas:"
     elif type == "topic":
-        system_instruction="Provide a concise summary of the list of posts provided and focus on key points and main ideas that correlate to the overarching topic:"
+        system_instruction="Provide a concise summary of the numbered list of posts provided and focus on key points and main ideas that correlate to the overarching topic:"
 
     response = client.models.generate_content(
         model="gemini-2.0-flash",
@@ -47,7 +46,7 @@ def summarize(text, type, image=None):
     )
     return response.text
     
-def fetch_post_info(topic, sort='hot', limit=2):
+def fetch_post_info(topic, sort='hot', limit=5):
     """
     Fetch Reddit posts based on a topic.
     """
@@ -59,15 +58,16 @@ def fetch_post_info(topic, sort='hot', limit=2):
 
     image_extensions = [".jpeg", ".png"]
 
-    # TODO: check if the post is solely image based, if so then 
+    # TODO: check if the post is solely image based 
     for index, submission in enumerate(reddit.subreddit('all').search(topic, sort, limit=limit)):
         title = submission.title
         full_text = title + " " + submission.selftext
-        topic_summary = f"{index}. {full_text}"
+        topic_summary += f"{index}. {full_text}"
         url = submission.url
 
         message = TextBlob(full_text)
 
+        # Retrieves the comment's polarity and subjectivity
         polarity = message.sentiment.polarity
         subjectivity = message.sentiment.subjectivity
 
@@ -77,6 +77,7 @@ def fetch_post_info(topic, sort='hot', limit=2):
         aggregate_polarity += polarity
         aggregate_subjectivity += subjectivity
         
+        # Stores post data to dictionary
         post_data = {
             "title": title,
             "url": url,
@@ -87,10 +88,15 @@ def fetch_post_info(topic, sort='hot', limit=2):
 
         posts_info.append(post_data)
 
+    print(summarize(topic_summary, "topic"))
 
+    # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(posts_info)
     aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
+
     return posts_info, aggregate_polarity, aggregate_subjectivity
+
+print(fetch_post_info("hachiware"))
 
 def fetch_reddit_user_info(username, limit=20):
     user_info = []
@@ -105,6 +111,8 @@ def fetch_reddit_user_info(username, limit=20):
     # Does it in order of latest -> oldest
     for comment in user.comments.new(limit=limit):
         message = TextBlob(comment.body)
+
+        # Retrieves the comment's polarity and subjectivity
         polarity = message.sentiment.polarity
         subjectivity = message.sentiment.subjectivity
 
@@ -117,18 +125,21 @@ def fetch_reddit_user_info(username, limit=20):
         else:
             subreddits[comment.subreddit.display_name] = 1
 
+        # Stores polarity and subjectivity of each user's comment
         comment_data = {
             "polarity": polarity,
             "subjectivity": subjectivity,
         }
         user_info.append(comment_data)
-        
+    
+    # Retrieves the user's top 3 most frequently subreddits they've commented on
     top_subreddits = Counter(subreddits)
     if(not top_subreddits):
         top_3_subreddits = []
     else:
         top_3_subreddits = top_subreddits.most_common(3) 
     
+    # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(user_info)
     aggregate_subjectivity = aggregate_subjectivity/len(user_info)
 
