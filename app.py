@@ -3,9 +3,6 @@ from flask_cors import CORS  # Import CORS
 import praw
 from textblob import TextBlob
 from dotenv import load_dotenv
-# from flask_cors import CORS  # Import CORS
-# from src.reddit_api import fetch_reddit_posts
-# from src.sentiment_analysis import analyze_sentiment
 import os
 
 app = Flask(__name__, static_folder='client/src')
