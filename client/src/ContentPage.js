@@ -14,6 +14,7 @@ import thumbsDown1 from "./assets/thumbs-down.png";
 import thumbsNeutral2 from "./assets/thumbs-neutral.png";
 import thumbsNeutral from "./assets/thumbs-neutral.png";
 import topLine from "./assets/top-line.png";
+import subReddit from "./assets/subreddit.png"
 
 export const ContentPage = () => {
   const [topic, setTopic] = useState("");
@@ -48,62 +49,40 @@ export const ContentPage = () => {
     }
   } ;
 
-  return (
-    <div className="content-page">
-      <div className="div">
-        <div className="post">
-          <img className="bottom-line" alt="Bottom line" src={bottomLine} />
+    return (
+      <div className="content-page">
+        <div className="div">
 
+          <div className="overlap">
+
+
+    {result && (
+    <div id="result">
+      {result.posts.map((post, index) => (
+        <div key={index} className="post-3">
+
+        {/* Dynamic Post Content */}
+        <div className="text-wrapper-2">{post.title}</div>
+        <div className="text-wrapper">{post.summary}</div>    
+
+        {/* Icon Section */}
+        <div className="icon-container">
+        <div className="sentiment-icon">
+            <img className="thumbs-up" alt="Sentiment Score" src={thumbsUp} />
+          </div>
           <div className="subjectivity-icon">
-            <img className="num" alt="Num" src={num412} />
+            <img className="num" alt="Subjectivity Score" src={num41} />
           </div>
-
-          <div className="sentiment-icon">
-            <img className="thumbs-down" alt="Thumbs down" src={thumbsDown1} />
-          </div>
-
-          <div className="text-wrapper">Summary of Post</div>
-
-          <div className="text-wrapper-2">Title</div>
-
-          <div className="text-wrapper-3">r/kitty</div>
         </div>
 
-        <div className="overlap">
-          <div className="post-2">
-            <img className="bottom-line" alt="Bottom line" src={bottomLine} />
-            <div className="subjectivity-icon">
-              <img className="num" alt="Num" src={num413} />
-            </div>
-            <div className="sentiment-icon">
-              <img
-                className="thumbs-neutral"
-                alt="Thumbs neutral"
-                src={thumbsNeutral2}
-              />
-            </div>
-            <div className="text-wrapper">Summary of Post</div>
-            <div className="text-wrapper-2">Title</div>
-            <div className="text-wrapper-3">r/ufl</div>
-          </div>
+        {/* Decorative Line Below Icons */}
+        <img className="bottom-line" alt="Bottom line" src={bottomLine2} />
+    
+        </div>
+      ))}
+    </div>
+  )}
 
-          <div className="post-3">
-            <img className="bottom-line" alt="Bottom line" src={bottomLine2} />
-
-            <div className="subjectivity-icon">
-              <img className="num" alt="Num" src={num41} />
-            </div>
-
-            <div className="sentiment-icon">
-                <img className="thumbs-up" alt="thumbs up" src={thumbsUp} />
-            </div>
-
-            <div className="text-wrapper">Summary of Pos</div>
-
-            <div className="text-wrapper-2">Title</div>
-
-            <div className="text-wrapper-3">r/clairo</div>
-          </div>
 
         </div>
 
@@ -120,7 +99,7 @@ export const ContentPage = () => {
             </div>
 
             <div className="num-wrapper">
-              <img className="num" alt="Num" src={num41} />
+              <img className="num-topic" alt="Num" src={num41} />
             </div>
 
             <div className="thumbs-neutral-wrapper">
@@ -128,6 +107,30 @@ export const ContentPage = () => {
                 className="thumbs-neutral"
                 alt="Thumbs neutral"
                 src={thumbsNeutral}
+              />
+            </div>
+
+            <div className="box1">
+              <img 
+              className="subreddit-bubble1" 
+              alt="subreddit-1"
+              src={subReddit}
+              />
+            </div>
+
+            <div className="box2">
+              <img 
+              className="subreddit-bubble2" 
+              alt="subreddit-2"
+              src={subReddit}
+              />
+            </div>
+
+            <div className="box3">
+              <img 
+              className="subreddit-bubble3" 
+              alt="subreddit-3"
+              src={subReddit}
               />
             </div>
 
@@ -158,22 +161,6 @@ export const ContentPage = () => {
 
           {error && <p>{error}</p>}
 
-          {result && (
-            <div id="result">
-              <h3>Reddit Posts:</h3>
-              <p>popularity {result.popularity_change}</p>
-              {result.posts.map((post, index) => (
-                <div key={index}>
-                  <p><strong>Post {index + 1}:</strong> {post.title}</p>
-                  <p><strong>URL:</strong> {post.url}</p>
-                  <p><strong>Summary:</strong> {post.summary}</p>
-                  <p><strong>Sentiment Score:</strong> {post.polarity}</p>
-                  <p><strong>Subjectivity Score:</strong> {post.subjectivity}</p>
-                </div>
-            ))}
-            <h4>Aggregate Sentiment Score: {result.aggregate_polarity}</h4>
-          </div>
-     )}
 
           <div className="overlap-wrapper">
             <div className="overlap-3">

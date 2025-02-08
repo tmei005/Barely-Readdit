@@ -4,6 +4,7 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    min-height: 100vh;
   }
   
   .content-page .div {
@@ -21,44 +22,50 @@
     width: 943px;
   }
   
-  .content-page .bottom-line {
+/* Bottom Line Styling */
+.content-page .bottom-line {
+    width: 100%;
     height: 3px;
-    left: 0;
     object-fit: cover;
-    position: absolute;
-    top: 221px;
-    width: 937px;
+    margin-top: 10px; /* Space between icons and bottom line */
+  }
+
+  /* Icon Container (for subjectivity & sentiment icons) */
+.content-page .icon-container {
+    display: flex;
+    gap: 10px; /* Space between icons */
+    align-items: center; /* Vertically center icons */
+    margin-bottom: 10px; /* Space between icons and bottom line */
+    margin-top: 15px;
   }
   
-  .content-page .subjectivity-icon {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 65px;
-    position: absolute;
-    top: 165px;
-    width: 43px;
-  }
-  
-  .content-page .num {
-    height: 29px;
-    left: 5px;
-    object-fit: cover;
-    position: absolute;
-    top: 7px;
-    width: 32px;
-  }
-  
-  .content-page .sentiment-icon {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 13px;
-    position: absolute;
-    top: 165px;
-    width: 43px;
-  }
-  
+  /* Individual Icon Styling */
+.content-page .subjectivity-icon,
+.content-page .sentiment-icon {
+  background-color: #ebe9d7;
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Icon Images */
+.content-page .num-topic{
+    width: 42px;
+    height: 30px;
+    object-fit: contain;
+    padding-top: 6px;
+}
+
+.content-page .thumbs-up {
+  width: 40px;
+  height: 28px;
+  object-fit: contain;
+}
+
   .content-page .thumbs-down {
     height: 23px;
     left: 8px;
@@ -68,31 +75,40 @@
     width: 26px;
   }
   
-  .content-page .text-wrapper {
-    color: #382020;
-    font-family: "Nunito-Regular", Helvetica;
-    font-size: 22px;
-    font-weight: 400;
-    left: 20px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 62px;
-    width: 830px;
-  }
-  
   .content-page .text-wrapper-2 {
     color: #382020;
     font-family: "Nunito-Bold", Helvetica;
     font-size: 26px;
     font-weight: 700;
-    left: 20px;
     letter-spacing: 0;
     line-height: normal;
-    position: absolute;
-    top: 31px;
-    white-space: nowrap;
-    width: 237px;
+
+    position: relative;
+    word-wrap: break-word; 
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-clamp: 2; 
+    -webkit-box-orient: vertical;
+
+    text-overflow: ellipsis;    /* Ensure the ellipsis is displayed */
+    white-space: normal;  
+
+    width: 100%;
+    top: 10px;
+  }
+
+  .content-page .text-wrapper {
+    color: #382020;
+    font-family: "Nunito-Regular", Helvetica;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    width: 830px;
+    margin-top: 20px
   }
   
   .content-page .text-wrapper-3 {
@@ -133,23 +149,74 @@
     top: 8px;
     width: 24px;
   }
+
+  .content-page .box1 {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 30px;
+    position: absolute;
+    top: 192px;
+  }
+
+  .content-page .box2 {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 143px;
+    position: absolute;
+    top: 192px;
+  }
+
+  .content-page .box3 {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 240px;
+    position: absolute;
+    top: 192px;
+  }
+  
+  .box1 .subreddit-bubble1 {
+    background-color: #c7c6bc;
+    border-radius: 45px;
+    height: 33px;
+    width: 95px;
+  
+    position: absolute;  
+    top: 0;
+    left: 190px;  
+  }
+
+  .box2 .subreddit-bubble2 {
+    background-color: #c7c6bc;
+    border-radius: 45px;
+    height: 33px;
+    width: 80px;
+  
+    position: absolute;  
+    top: 0;
+    left: 190px;  
+  }
+  
+  .box3 .subreddit-bubble3 {
+    background-color: #c7c6bc;
+    border-radius: 45px;
+    height: 33px;
+    width: 80px;
+  
+    position: absolute;  
+    top: 0;
+    left: 190px;  
+  }
   
   .content-page .post-3 {
-    height: 224px;
-    left: 81px;
-    position: absolute;
-    top: 0;
+    background-color: #f7f6eb;
+    padding: 15px;
     width: 943px;
+    padding-left: 90px;
   }
   
-  .content-page .thumbs-up {
-    height: 25px;
-    left: 7px;
-    object-fit: cover;
-    position: absolute;
-    top: 9px;
-    width: 30px;
-  }
   
   .content-page .tooltip {
     height: 131px;
@@ -209,8 +276,8 @@
     height: 1px;
     left: 0;
     object-fit: cover;
-    position: absolute;
-    top: 446px;
+    position: relative;
+    top: 427px;
     width: 1280px;
   }
   
