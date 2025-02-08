@@ -46,7 +46,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
     """
     Fetch Reddit posts based on a topic.
     """
-    posts_info = []
+    topic_posts = []
     topic_summary = ""
 
     aggregate_polarity = 0
@@ -59,7 +59,6 @@ def fetch_post_info(topic, sort='hot', limit=5):
         title = submission.title
         full_text = title + " " + submission.selftext
         topic_summary += f"{index}. {full_text}"
-        url = submission.url
 
         message = TextBlob(full_text)
 
@@ -75,36 +74,39 @@ def fetch_post_info(topic, sort='hot', limit=5):
         
         # Stores post data to dictionary
         post_data = {
+            "subreddit": submission.subreddit.display_name,
+            "redditor": submission.author.name,
+            "redditor icon": submission.author.icon_img,
             "title": title,
-            "url": url,
+            "url": submission.url,
             "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
         }
+        topic_posts.append(post_data)
 
-        posts_info.append(post_data)
-
-    print(summarize(topic_summary, "topic"))
+    topic_summary = summarize(topic_summary, "topic")
 
     # Calculates the average polarity and subjectivity of the user's comments
-    aggregate_polarity = aggregate_polarity/len(posts_info)
-    aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
+    post_average_polarity = aggregate_polarity/len(topic_posts)
+    post_average_subjectivity = aggregate_subjectivity/len(topic_posts)
 
-    return posts_info, aggregate_polarity, aggregate_subjectivity
+    return topic_posts, topic_summary, post_average_polarity, post_average_subjectivity
 
 print(fetch_post_info("hachiware"))
 
 def fetch_reddit_user_info(username, limit=20):
-    user_info = []
+    comments = []
     subreddits = {}
 
     user = reddit.redditor(username)
-    user_info.append(user.icon_img)
+    username = user.name
+    icon_url = user.icon_img
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
 
-    # Does it in order of latest -> oldest
+    # Adds it in order of latest -> oldest
     for comment in user.comments.new(limit=limit):
         message = TextBlob(comment.body)
 
@@ -126,7 +128,7 @@ def fetch_reddit_user_info(username, limit=20):
             "polarity": polarity,
             "subjectivity": subjectivity,
         }
-        user_info.append(comment_data)
+        comments.append(comment_data)
     
     # Retrieves the user's top 3 most frequently subreddits they've commented on
     top_subreddits = Counter(subreddits)
@@ -136,10 +138,12 @@ def fetch_reddit_user_info(username, limit=20):
         top_3_subreddits = top_subreddits.most_common(3) 
     
     # Calculates the average polarity and subjectivity of the user's comments
-    aggregate_polarity = aggregate_polarity/len(user_info)
-    aggregate_subjectivity = aggregate_subjectivity/len(user_info)
+    user_average_polarity = aggregate_polarity/len(comments)
+    user_average_subjectivity = aggregate_subjectivity/len(comments)
 
-    return user_info, top_3_subreddits, aggregate_polarity, aggregate_subjectivity
+    return username, icon_url, comments, top_3_subreddits, user_average_polarity, user_average_subjectivity
+
+# print(fetch_reddit_user_info("segcymf"))
 
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
@@ -159,14 +163,17 @@ def analyze():
         return jsonify({"error": "Please provide a topic"}), 400
     sort = request.args.get('sort')
     if sort != 'hot':
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
+        posts, topic_summary, post_aggregate_polarity, post_aggregate_subjectivity = fetch_post_info(topic, sort)
     else:
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
+        posts, topic_summary, post_aggregate_polarity, post_aggregate_subjectivity = fetch_post_info(topic)
     
+    user_info, top_3_subreddits, user_average_polarity, user_average_subjectivity = fetch_reddit_user_info(posts[redditor])
+
     return jsonify({
         'topic': topic,
         'sort': sort,
         'posts': posts,
+        'topic_summary': topic_summary,
         'aggregate_polarity': aggregate_polarity,
         'aggregate_subjectivity': aggregate_subjectivity
     })
