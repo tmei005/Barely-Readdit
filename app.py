@@ -3,9 +3,11 @@ from flask_cors import CORS  # Import CORS
 import praw
 from textblob import TextBlob
 import os
+
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -32,6 +34,7 @@ def summarize(text, type, image=None):
     if type == "post":
         system_instruction="Provide a concise summary of the post and focus on key points and main ideas:"
     elif type == "topic":
+        # make it better
         system_instruction="Provide a concise summary of the numbered list of posts provided and focus on key points and main ideas that correlate to the overarching topic:"
 
     response = client.models.generate_content(
@@ -93,9 +96,12 @@ def fetch_post_info(topic, sort='hot', limit=5):
 
     return topic_posts, topic_summary, post_average_polarity, post_average_subjectivity
 
-print(fetch_post_info("hachiware"))
+# print(fetch_post_info("hachiware"))
 
 def fetch_reddit_user_info(username, limit=20):
+    """
+    
+    """
     comments = []
     subreddits = {}
 
@@ -145,6 +151,11 @@ def fetch_reddit_user_info(username, limit=20):
 
 # print(fetch_reddit_user_info("segcymf"))
 
+def subreddit_matcher(topic, topic_summary):
+    
+
+
+    
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
 def index():
