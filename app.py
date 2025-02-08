@@ -5,11 +5,10 @@ import datetime
 import time
 from textblob import TextBlob
 import os
-
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from textblob.wordnet import Synset
+# from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -93,6 +92,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
         full_text = title + " " + submission.selftext
         topic_summary += f"{index}. {full_text}"
         url = submission.url
+        op = fetch_reddit_user_info(submission.author.name)
 
         message = TextBlob(full_text)
 
@@ -108,8 +108,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
         # Stores post data to dictionary
         post_data = {
             "subreddit": submission.subreddit.display_name,
-            "redditor": submission.author.name,
-            "redditor icon": submission.author.icon_img,
+            "op": op,
             "title": title,
             "url": url,
             # "summary": summary,
@@ -118,12 +117,12 @@ def fetch_post_info(topic, sort='hot', limit=5):
         }
         topic_posts.append(post_data)
 
-    topic_summary = summarize(topic_summary, "topic")
+    # topic_summary = summarize(topic_summary, "topic")
 
     # Calculates the average polarity and subjectivity of the user's comments
-    aggregate_polarity = aggregate_polarity/len(posts_info)
-    aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
-    return posts_info, aggregate_polarity, aggregate_subjectivity
+    aggregate_polarity = aggregate_polarity/len(topic_posts)
+    aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
+    return topic_posts, aggregate_polarity, aggregate_subjectivity
 
 # print(fetch_post_info("hachiware"))
 
@@ -176,14 +175,9 @@ def fetch_reddit_user_info(username, limit=20):
     user_average_polarity = aggregate_polarity/len(comments)
     user_average_subjectivity = aggregate_subjectivity/len(comments)
 
-    return username, icon_url, comments, top_3_subreddits, user_average_polarity, user_average_subjectivity
+    return username, icon_url, top_3_subreddits, user_average_polarity, user_average_subjectivity
 
-# print(fetch_reddit_user_info("segcymf"))
-
-def subreddit_matcher(topic, topic_summary):
-    
-
-
+# def subreddit_matcher(topic, topic_summary):    
     
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
