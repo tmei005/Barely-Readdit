@@ -13,12 +13,6 @@ reddit = praw.Reddit(
 
 def fetch_reddit_posts(topic, limit=10):
     posts = []
-    for submission in reddit.subreddit("all").search(topic, limit=limit):
-        posts.append({
-            "title": submission.title,
-            "text": submission.selftext if submission.selftext else submission.title,
-            "score": submission.score,
-            "url": submission.url
-        })
-    
+    for submission in reddit.subreddit('all').search(topic, limit=limit):
+        posts.append(submission.title)
     return posts
