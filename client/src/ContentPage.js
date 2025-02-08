@@ -161,6 +161,7 @@ export const ContentPage = () => {
           {result && (
             <div id="result">
               <h3>Reddit Posts:</h3>
+              <p>popularity {result.popularity_change}</p>
               {result.posts.map((post, index) => (
                 <div key={index}>
                   <p><strong>Post {index + 1}:</strong> {post.title}</p>
