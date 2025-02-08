@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import "./styles.css";
-import thumbsUp from './assets/Thumbs-Up.png'; 
+import thumbsUp from "./assets/thumbs-up-regular.svg";
+import thumbsDown from "./assets/thumbs-down-regular.svg";
+import thumbsNeutral from "./assets/thumbs-neutral.png";
 import bottomLine2 from "./assets/Bottom-Line.png";
-import arrowUp from "./assets/arrow-up.png"
+import arrowUp from "./assets/arrow-trend-up-solid.svg";
+import arrowDown from "./assets/arrow-trend-down-solid.svg";
+import arrowRight from "./assets/arrow-right-solid.svg";
 import bottomLine from "./assets/Bottom-Line.png";
 import divider from "./assets/Divider.png";
 import logo from "./assets/Logo.png";
@@ -10,11 +14,11 @@ import num412 from "./assets/Num4.png";
 import num413 from "./assets/Num4.png";
 import num41 from "./assets/Num4.png";
 import polygon1 from "./assets/Polygon.png";
-import thumbsDown1 from "./assets/thumbs-down.png";
-import thumbsNeutral2 from "./assets/thumbs-neutral.png";
-import thumbsNeutral from "./assets/thumbs-neutral.png";
 import topLine from "./assets/top-line.png";
 import subReddit from "./assets/subreddit.png"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowTrendDown } from "@fortawesome/free-solid-svg-icons";
+
 
 export const ContentPage = () => {
   const [topic, setTopic] = useState("");
@@ -52,10 +56,7 @@ export const ContentPage = () => {
     return (
       <div className="content-page">
         <div className="div">
-
           <div className="overlap">
-
-
     {result && (
     <div id="result">
       {result.posts.map((post, index) => (
@@ -68,7 +69,14 @@ export const ContentPage = () => {
         {/* Icon Section */}
         <div className="icon-container">
         <div className="sentiment-icon">
-            <img className="thumbs-up" alt="Sentiment Score" src={thumbsUp} />
+          <img 
+            className="thumbs-up" 
+            alt={post.polarity} 
+            src={
+              parseFloat(post.polarity) > 0 ? thumbsUp : 
+              parseFloat(post.polarity) < 0 ? thumbsDown  : thumbsNeutral
+            }
+          />
           </div>
           <div className="subjectivity-icon">
             <img className="num" alt="Subjectivity Score" src={num41} />
@@ -82,34 +90,37 @@ export const ContentPage = () => {
       ))}
     </div>
   )}
-
-
         </div>
 
         <img className="top-line" alt="Top line" src={topLine} />
+        {result && (
 
         <div className="summary-block">
           <div className="overlap-group-2">
             <div className="div-wrapper">
-              <div className="text-wrapper-5">Topic</div>
+              <div className="text-wrapper-5">{result.topic}</div>
             </div>
 
             <div className="popularity-icon">
-              <img className="arrow-up" alt="arrow up" src={arrowUp} />
+              <img className="arrow-up" alt="arrow up" 
+              src={
+                parseFloat(result.popularity_change) > 0 ? arrowUp : 
+                parseFloat(result.popularity_change) < 0 ? arrowDown : arrowRight
+              } />
             </div>
-
             <div className="num-wrapper">
               <img className="num-topic" alt="Num" src={num41} />
             </div>
-
             <div className="thumbs-neutral-wrapper">
-              <img
-                className="thumbs-neutral"
-                alt="Thumbs neutral"
-                src={thumbsNeutral}
-              />
+            <img 
+            className="thumbs-up" 
+            alt={result.aggregate_polarity} 
+            src={
+              parseFloat(result.aggregate_polarity) > 0 ? thumbsUp : 
+              parseFloat(result.aggregate_polarity) < 0 ? thumbsDown : thumbsNeutral
+            }
+          />
             </div>
-
             <div className="box1">
               <img 
               className="subreddit-bubble1" 
@@ -117,7 +128,6 @@ export const ContentPage = () => {
               src={subReddit}
               />
             </div>
-
             <div className="box2">
               <img 
               className="subreddit-bubble2" 
@@ -125,7 +135,6 @@ export const ContentPage = () => {
               src={subReddit}
               />
             </div>
-
             <div className="box3">
               <img 
               className="subreddit-bubble3" 
@@ -133,11 +142,10 @@ export const ContentPage = () => {
               src={subReddit}
               />
             </div>
-
-            <div className="text-wrapper-6">Overall summary</div>
+            <div className="text-wrapper-6">{result.topic_summary}</div>
           </div>
         </div>
-
+        )}
         <div className="overlap-2">
           <header className="header">
             <img className="divider" alt="Divider" src={divider} />
@@ -152,7 +160,6 @@ export const ContentPage = () => {
             />
             <div className="group">
               <div className="text-wrapper-7">BarelyReaddit</div>
-
               <img className="logo" alt="Logo" src={logo} />
             </div>
           </header>
@@ -160,12 +167,9 @@ export const ContentPage = () => {
           {loading && <p id="loading">Loading...</p>}
 
           {error && <p>{error}</p>}
-
-
           <div className="overlap-wrapper">
             <div className="overlap-3">
               <div className="text-wrapper-8">Rising</div>
-
               <img className="polygon" alt="Polygon" src={polygon1} />
             </div>
           </div>

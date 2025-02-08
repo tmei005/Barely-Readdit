@@ -50,18 +50,18 @@ def summarize(text, type, image=None):
 def get_topic_popularity(topic):
     """
     Fetch post count for a given topic over the last 14 days 
-    and calculate percentage change from the previous week.
+    and calculate percentage change from the previous day.
     """
     end_time = time.time()
-    one_week_ago = end_time - (7 * 24 * 60 * 60)
-    two_weeks_ago = one_week_ago - (7 * 24 * 60 * 60)
+    one_day_ago = end_time - ( 24 * 60 * 60)
+    two_days_ago = one_day_ago - ( 24 * 60 * 60)
 
     curr_count = 0
     last_count = 0
     for submission in reddit.subreddit("all").search(topic, sort="new"):  # Adjust limit as needed
-        if one_week_ago <= submission.created_utc <= end_time:
+        if one_day_ago <= submission.created_utc <= end_time:
             curr_count += 1
-        elif two_weeks_ago <= submission.created_utc <= one_week_ago:
+        elif two_days_ago <= submission.created_utc <= one_day_ago:
             last_count += 1
         else:
             break
