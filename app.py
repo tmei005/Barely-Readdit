@@ -5,9 +5,11 @@ import datetime
 import time
 from textblob import TextBlob
 import os
+
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -34,6 +36,7 @@ def summarize(text, type, image=None):
     if type == "post":
         system_instruction="Provide a concise summary of the post and focus on key points and main ideas:"
     elif type == "topic":
+        # make it better
         system_instruction="Provide a concise summary of the numbered list of posts provided and focus on key points and main ideas that correlate to the overarching topic:"
 
     response = client.models.generate_content(
@@ -75,7 +78,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
     """
     Fetch Reddit posts based on a topic.
     """
-    posts_info = []
+    topic_posts = []
     topic_summary = ""
 
     aggregate_polarity = 0
@@ -90,8 +93,6 @@ def fetch_post_info(topic, sort='hot', limit=5):
         full_text = title + " " + submission.selftext
         topic_summary += f"{index}. {full_text}"
         url = submission.url
-        op = submission.author.name
-        fetch_reddit_user_info(op)
 
         message = TextBlob(full_text)
 
@@ -106,36 +107,41 @@ def fetch_post_info(topic, sort='hot', limit=5):
         
         # Stores post data to dictionary
         post_data = {
+            "subreddit": submission.subreddit.display_name,
+            "redditor": submission.author.name,
+            "redditor icon": submission.author.icon_img,
             "title": title,
             "url": url,
-            "op":op,
             # "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
         }
+        topic_posts.append(post_data)
 
-        posts_info.append(post_data)
-
-    print(summarize(topic_summary, "topic"))
+    topic_summary = summarize(topic_summary, "topic")
 
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(posts_info)
     aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
-    return popularity_change, posts_info, aggregate_polarity, aggregate_subjectivity
+    return posts_info, aggregate_polarity, aggregate_subjectivity
 
-print(fetch_post_info("hachiware"))
+# print(fetch_post_info("hachiware"))
 
 def fetch_reddit_user_info(username, limit=20):
-    user_info = []
+    """
+    
+    """
+    comments = []
     subreddits = {}
 
     user = reddit.redditor(username)
-    user_info.append(user.icon_img)
+    username = user.name
+    icon_url = user.icon_img
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
 
-    # Does it in order of latest -> oldest
+    # Adds it in order of latest -> oldest
     for comment in user.comments.new(limit=limit):
         message = TextBlob(comment.body)
 
@@ -157,7 +163,7 @@ def fetch_reddit_user_info(username, limit=20):
             "polarity": polarity,
             "subjectivity": subjectivity,
         }
-        user_info.append(comment_data)
+        comments.append(comment_data)
     
     # Retrieves the user's top 3 most frequently subreddits they've commented on
     top_subreddits = Counter(subreddits)
@@ -167,11 +173,18 @@ def fetch_reddit_user_info(username, limit=20):
         top_3_subreddits = top_subreddits.most_common(3) 
     
     # Calculates the average polarity and subjectivity of the user's comments
-    aggregate_polarity = aggregate_polarity/len(user_info)
-    aggregate_subjectivity = aggregate_subjectivity/len(user_info)
+    user_average_polarity = aggregate_polarity/len(comments)
+    user_average_subjectivity = aggregate_subjectivity/len(comments)
 
-    return user_info, top_3_subreddits, aggregate_polarity, aggregate_subjectivity
+    return username, icon_url, comments, top_3_subreddits, user_average_polarity, user_average_subjectivity
 
+# print(fetch_reddit_user_info("segcymf"))
+
+def subreddit_matcher(topic, topic_summary):
+    
+
+
+    
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
 def index():
@@ -190,16 +203,14 @@ def analyze():
         return jsonify({"error": "Please provide a topic"}), 400
     sort = request.args.get('sort')
     if sort != 'hot':
-        popularity_change, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
+        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
     else:
-        popularity_change, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
+        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
     
-
     return jsonify({
         'topic': topic,
         'sort': sort,
         'posts': posts,
-        'popularity_change': popularity_change,
         'aggregate_polarity': aggregate_polarity,
         'aggregate_subjectivity': aggregate_subjectivity
     })
