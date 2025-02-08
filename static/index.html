@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reddit Sentiment Analyzer</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Reddit Sentiment Analyzer</h1>
+
+      <!-- Search Bar -->
+      <input type="text" id="topicInput" placeholder="Enter topic..." />
+      <button id="analyzeBtn">Analyze Sentiment</button>
+
+      <div id="result">
+        <h2>Sentiment Analysis Result:</h2>
+        <div id="sentimentResult">
+          <!-- Sentiment Result will show here -->
+        </div>
+        <h2>Reddit Posts:</h2>
+        <ul id="redditPosts">
+          <!-- Reddit Posts will show here -->
+        </ul>
+      </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>

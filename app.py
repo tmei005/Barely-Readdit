@@ -1,17 +1,34 @@
-import praw
+from flask import Flask, jsonify, request, send_from_directory
+# from flask_cors import CORS  # Import CORS
+from src.reddit_api import fetch_reddit_posts
+from src.sentiment_analysis import analyze_sentiment
+import os
 
-# Authenticate with Reddit API
-reddit = praw.Reddit(client_id='H6GGMGzGIJvwVCAxx4GWcw',
-                     client_secret='a7ZNWz29TJcjkr9eqimg5x8iF9UPkg',
-                     user_agent='Tina Mei')
+app = Flask(__name__)
+# CORS(app)
 
-# Function to fetch posts related to a topic
-def fetch_reddit_posts(topic, limit=100):
-    posts = []
-    for submission in reddit.subreddit('all').search(topic, limit=limit):
-        posts.append(submission.title)
-    return posts
+# Serve the static files (HTML, CSS, JS)
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
 
-topic = "Python programming"  # Example topic
-posts = fetch_reddit_posts(topic)
-print(posts)
+@app.route('/static/<path:path>')
+def static_file(path):
+    return send_from_directory('static', path)
+
+@app.route('/analyze', methods=['GET'])
+def analyze():
+    topic = request.args.get('topic')
+    if not topic:
+        return jsonify({"error": "Please provide a topic"}), 400
+
+    posts = fetch_reddit_posts(topic)
+    sentiment = analyze_sentiment(topic)
+
+    return jsonify({
+        "sentiment": sentiment,
+        "redditPosts": posts
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)
