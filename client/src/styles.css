@@ -1,58 +1,429 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+.content-page {
+    background-color: #f7f6eb;
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
-}
-
-h1 {
-    text-align: center;
-}
-
-input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    margin: 10px 0;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#sentimentResult {
-    margin-top: 20px;
+  }
+  
+  .content-page .div {
+    background-color: #f7f6eb;
+    height: 1559px;
+    position: relative;
+    width: 1280px;
+  }
+  
+  .content-page .post {
+    height: 224px;
+    left: 171px;
+    position: absolute;
+    top: 956px;
+    width: 943px;
+  }
+  
+  .content-page .bottom-line {
+    height: 3px;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 221px;
+    width: 937px;
+  }
+  
+  .content-page .subjectivity-icon {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 65px;
+    position: absolute;
+    top: 165px;
+    width: 43px;
+  }
+  
+  .content-page .num {
+    height: 29px;
+    left: 5px;
+    object-fit: cover;
+    position: absolute;
+    top: 7px;
+    width: 32px;
+  }
+  
+  .content-page .sentiment-icon {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 13px;
+    position: absolute;
+    top: 165px;
+    width: 43px;
+  }
+  
+  .content-page .thumbs-down {
+    height: 23px;
+    left: 8px;
+    object-fit: cover;
+    position: absolute;
+    top: 11px;
+    width: 26px;
+  }
+  
+  .content-page .text-wrapper {
+    color: #382020;
+    font-family: "Nunito-Regular", Helvetica;
+    font-size: 22px;
+    font-weight: 400;
+    left: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 62px;
+    width: 830px;
+  }
+  
+  .content-page .text-wrapper-2 {
+    color: #382020;
+    font-family: "Nunito-Bold", Helvetica;
+    font-size: 26px;
+    font-weight: 700;
+    left: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 31px;
+    white-space: nowrap;
+    width: 237px;
+  }
+  
+  .content-page .text-wrapper-3 {
+    color: #382020;
+    font-family: "Nunito-LightItalic", Helvetica;
     font-size: 18px;
-}
-
-ul {
-    padding-left: 20px;
-}
-
-li {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
+    font-style: italic;
+    font-weight: 300;
+    left: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    width: 278px;
+  }
+  
+  .content-page .overlap {
+    height: 461px;
+    left: 90px;
+    position: absolute;
+    top: 482px;
+    width: 1024px;
+  }
+  
+  .content-page .post-2 {
+    height: 224px;
+    left: 81px;
+    position: absolute;
+    top: 237px;
+    width: 943px;
+  }
+  
+  .content-page .thumbs-neutral {
+    height: 29px;
+    left: 10px;
+    object-fit: cover;
+    position: absolute;
+    top: 8px;
+    width: 24px;
+  }
+  
+  .content-page .post-3 {
+    height: 224px;
+    left: 81px;
+    position: absolute;
+    top: 0;
+    width: 943px;
+  }
+  
+  .content-page .thumbs-up {
+    height: 25px;
+    left: 7px;
+    object-fit: cover;
+    position: absolute;
+    top: 9px;
+    width: 30px;
+  }
+  
+  .content-page .tooltip {
+    height: 131px;
+    left: 0;
+    position: absolute;
+    top: 215px;
+    width: 230px;
+  }
+  
+  .content-page .overlap-group {
+    height: 131px;
+    position: relative;
+  }
+  
+  .content-page .rectangle {
+    background-color: #d8deed;
+    border-radius: 11px;
+    height: 109px;
+    left: 0;
+    position: absolute;
+    top: 22px;
+    width: 230px;
+  }
+  
+  .content-page .vector {
+    height: 25px;
+    left: 96px;
+    position: absolute;
+    top: 0;
+    width: 37px;
+  }
+  
+  .content-page .sentiment-this-post {
+    color: #000000;
+    font-family: "Nunito-Bold", Helvetica;
+    font-size: 20px;
+    font-weight: 400;
+    left: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 251px;
+    width: 181px;
+  }
+  
+  .content-page .span {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  
+  .content-page .text-wrapper-4 {
+    font-family: "Nunito-Regular", Helvetica;
+  }
+  
+  .content-page .top-line {
+    height: 1px;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 446px;
+    width: 1280px;
+  }
+  
+  .content-page .summary-block {
+    height: 246px;
+    left: 114px;
+    position: absolute;
+    top: 158px;
+    width: 1047px;
+  }
+  
+  .content-page .overlap-group-2 {
+    background-image: url(./assets/summary-dotted-BG.png);
+    background-size: 100% 100%;
+    height: 254px;
+    left: -4px;
+    position: relative;
+    width: 1051px;
+  }
+  
+  .content-page .div-wrapper {
+    background-image: url(./assets/summary-bar-BG.png);
+    background-size: 100% 100%;
+    height: 53px;
+    left: 4px;
+    position: absolute;
+    top: 0;
+    width: 1043px;
+  }
+  
+  .content-page .text-wrapper-5 {
+    color: #382020;
+    font-family: "Quicksand-Bold", Helvetica;
+    font-size: 26px;
+    font-weight: 700;
+    left: 401px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 9px;
+    width: 237px;
+  }
+  
+  .content-page .popularity-icon {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 126px;
+    position: absolute;
+    top: 187px;
+    width: 43px;
+  }
+  
+  .content-page .arrow-up {
+    height: 25px;
+    left: 7px;
+    position: absolute;
+    top: 9px;
+    width: 27px;
+  }
+  
+  .content-page .num-wrapper {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 74px;
+    position: absolute;
+    top: 187px;
+    width: 43px;
+  }
+  
+  .content-page .thumbs-neutral-wrapper {
+    background-color: #ebe9d7;
+    border-radius: 45px;
+    height: 43px;
+    left: 20px;
+    position: absolute;
+    top: 187px;
+    width: 43px;
+  }
+  
+  .content-page .text-wrapper-6 {
+    color: #382020;
+    font-family: "Nunito-Regular", Helvetica;
+    font-size: 22px;
+    font-weight: 400;
+    left: 22px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 69px;
+    width: 178px;
+  }
+  
+  .content-page .overlap-2 {
+    height: 96px;
+    left: 0;
+    position: absolute;
+    top: 28px;
+    width: 1280px;
+  }
+  
+  .content-page .header {
+    background-color: transparent;
+    height: 96px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 1280px;
+  }
+  
+  .content-page .divider {
+    height: 1px;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 95px;
+    width: 1280px;
+  }
+  
+  .content-page .search-bar {
+    background-color: #ebebeb;
+    border: 1.5px solid;
+    border-color: #8d8f94;
+    border-radius: 45px;
+    height: 48px;
+    left: 338px;
+    position: absolute;
+    top: 7px;
+    width: 718px;
+  }
+  
+  .content-page .group {
+    height: 64px;
+    left: 48px;
+    position: absolute;
+    top: 0;
+    width: 274px;
+  }
+  
+  .content-page .text-wrapper-7 {
+    color: #ff855a;
+    font-family: "Nunito-Bold", Helvetica;
+    font-size: 28px;
+    font-weight: 700;
+    left: 71px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 16px;
+    white-space: nowrap;
+    width: 201px;
+  }
+  
+  .content-page .logo {
+    height: 64px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 64px;
+  }
+  
+  .content-page .overlap-wrapper {
+    height: 47px;
+    left: 1084px;
+    position: absolute;
+    top: 8px;
+    width: 148px;
+  }
+  
+  .content-page .overlap-3 {
+    background-color: #ebebeb;
+    border-radius: 23.5px;
+    height: 47px;
+    position: relative;
+    width: 146px;
+  }
+  
+  .content-page .text-wrapper-8 {
+    color: #929191;
+    font-family: "Nunito-BoldItalic", Helvetica;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 700;
+    height: 28px;
+    left: 19px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 9px;
+    width: 90px;
+  }
+  
+  .content-page .polygon {
+    height: 11px;
+    left: 117px;
+    position: absolute;
+    top: 19px;
+    width: 11px;
+  }
+  
+  .content-page .text-wrapper-9 {
+    color: #9e9e9e;
+    font-family: "Nunito-SemiBoldItalic", Helvetica;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 600;
+    height: 27px;
+    left: 360px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 17px;
+  }
+  
