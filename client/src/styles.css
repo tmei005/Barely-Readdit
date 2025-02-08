@@ -60,6 +60,14 @@
     padding-top: 6px;
 }
 
+.num {
+  font-size: 24px;  /* Adjust as needed */
+  font-family: "Nunito-Bold", Helvetica;
+  font-weight: bold;
+  color: #000; /* Change text color */
+  text-align: center;
+}
+
 .content-page .thumbs-up {
   width: 40px;
   height: 28px;
@@ -368,9 +376,10 @@
     left: 22px;
     letter-spacing: 0;
     line-height: normal;
+    word-wrap: break-word;  /* Ensures long words break properly */
     position: absolute;
     top: 69px;
-    width: 178px;
+    width: auto;
   }
   
   .content-page .overlap-2 {

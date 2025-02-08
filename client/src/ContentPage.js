@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import "./styles.css";
-import thumbsUp from './assets/Thumbs-Up.png'; 
+import thumbsUp from './assets/thumbs-up-regular.svg'; 
+import thumbsDown from "./assets/thumbs-down-regular.svg";
+import thumbsNeutral from "./assets/thumbs-neutral.png";
 import bottomLine2 from "./assets/Bottom-Line.png";
-import arrowUp from "./assets/arrow-up.png"
+import arrowUp from "./assets/arrow-trend-up-solid.svg";
+import arrowDown from "./assets/arrow-trend-down-solid.svg";
+import arrowRight from "./assets/arrow-right-solid.svg";
 import bottomLine from "./assets/Bottom-Line.png";
 import divider from "./assets/Divider.png";
 import logo from "./assets/Logo.png";
@@ -10,9 +14,6 @@ import num412 from "./assets/Num4.png";
 import num413 from "./assets/Num4.png";
 import num41 from "./assets/Num4.png";
 import polygon1 from "./assets/Polygon.png";
-import thumbsDown1 from "./assets/thumbs-down.png";
-import thumbsNeutral2 from "./assets/thumbs-neutral.png";
-import thumbsNeutral from "./assets/thumbs-neutral.png";
 import topLine from "./assets/top-line.png";
 import subReddit from "./assets/subreddit.png";
 import magnifyingGlass from "./assets/magnifying-glass.svg";
@@ -69,11 +70,15 @@ export const ContentPage = () => {
         {/* Icon Section */}
         <div className="icon-container">
         <div className="sentiment-icon">
-            <img className="thumbs-up" alt="Sentiment Score" src={thumbsUp} />
+            <img className="thumbs-up" alt="Sentiment Score" src={
+  post.polarity > 0 ? thumbsUp : 
+  post.polarity < 0 ? thumbsDown : thumbsNeutral
+} />
           </div>
           <div className="subjectivity-icon">
-            <img className="num" alt="Subjectivity Score" src={num41} />
-          </div>
+            {/* <img className="num" alt="Subjectivity Score" {post.subjectivity} /> */}
+            <div className="num">{(post.subjectivity * 10).toFixed(1)}</div>
+            </div>
         </div>
 
         {/* Decorative Line Below Icons */}
@@ -83,24 +88,22 @@ export const ContentPage = () => {
       ))}
     </div>
   )}
-
-
         </div>
-
         <img className="top-line" alt="Top line" src={topLine} />
+        {result && (
 
         <div className="summary-block">
           <div className="overlap-group-2">
             <div className="div-wrapper">
-              <div className="text-wrapper-5">Topic</div>
-            </div>
-
+              <div className="text-wrapper-5">{topic}</div>
+            <div className="text-wrapper-6">{result.topic_summary}</div>
             <div className="popularity-icon">
               <img className="arrow-up" alt="arrow up" src={arrowUp} />
-            </div>
+            </div>            </div>
+
 
             <div className="num-wrapper">
-              <img className="num-topic" alt="Num" src={num41} />
+            <div className="num">{(result.aggregate_subjectivity * 10).toFixed(1)}</div>
             </div>
 
             <div className="thumbs-neutral-wrapper">
@@ -134,11 +137,9 @@ export const ContentPage = () => {
               src={subReddit}
               />
             </div>
-
-            <div className="text-wrapper-6">Overall summary</div>
           </div>
         </div>
-
+        )}
         <div className="overlap-2">
           <header className="header">
             <img className="divider" alt="Divider" src={divider} />
