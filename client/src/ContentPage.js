@@ -29,13 +29,9 @@ export const ContentPage = () => {
     try {
       const response = await fetch(`http://127.0.0.1:5000/analyze?topic=${encodeURIComponent(topic)}`);
       const data = await response.json();
- 
- 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
-      }
- 
- 
+      } 
       setResult(data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -52,7 +48,6 @@ export const ContentPage = () => {
     }
   } ;
 
-  
   return (
     <div className="content-page">
       <div className="div">
@@ -77,11 +72,9 @@ export const ContentPage = () => {
         <div className="overlap">
           <div className="post-2">
             <img className="bottom-line" alt="Bottom line" src={bottomLine} />
-
             <div className="subjectivity-icon">
               <img className="num" alt="Num" src={num413} />
             </div>
-
             <div className="sentiment-icon">
               <img
                 className="thumbs-neutral"
@@ -89,11 +82,8 @@ export const ContentPage = () => {
                 src={thumbsNeutral2}
               />
             </div>
-
             <div className="text-wrapper">Summary of Post</div>
-
             <div className="text-wrapper-2">Title</div>
-
             <div className="text-wrapper-3">r/ufl</div>
           </div>
 
@@ -157,8 +147,6 @@ export const ContentPage = () => {
               onKeyDown={handleKeyDown}
               placeholder="Search BarelyReaddit"
             />
-
-
             <div className="group">
               <div className="text-wrapper-7">BarelyReaddit</div>
 
@@ -175,11 +163,14 @@ export const ContentPage = () => {
               <h3>Reddit Posts:</h3>
               {result.posts.map((post, index) => (
                 <div key={index}>
-                  <p><strong>Post {index + 1}:</strong> {post}</p>
-                  <p><strong>Sentiment Score:</strong> {result.sentiment_scores[index]}</p>
+                  <p><strong>Post {index + 1}:</strong> {post.title}</p>
+                  <p><strong>URL:</strong> {post.url}</p>
+                  <p><strong>Summary:</strong> {post.summary}</p>
+                  <p><strong>Sentiment Score:</strong> {post.polarity}</p>
+                  <p><strong>Subjectivity Score:</strong> {post.subjectivity}</p>
                 </div>
             ))}
-            <h4>Aggregate Sentiment Score: {result.aggregate_sentiment}</h4>
+            <h4>Aggregate Sentiment Score: {result.aggregate_polarity}</h4>
           </div>
      )}
 

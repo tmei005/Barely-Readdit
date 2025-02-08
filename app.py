@@ -1,12 +1,8 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS  # Import CORS
-
 import praw
-
 from textblob import TextBlob
 import os
-
-
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
@@ -154,7 +150,7 @@ def index():
 def static_file(path):
     return send_from_directory('client/src', path)
 
-@app.route('/analyze', methods=['POST'])
+@app.route('/analyze', methods=['GET'])
 def analyze():
     sort = 'hot'
     topic = request.args.get('topic')
