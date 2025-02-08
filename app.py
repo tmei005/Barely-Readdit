@@ -90,6 +90,8 @@ def fetch_post_info(topic, sort='hot', limit=5):
         full_text = title + " " + submission.selftext
         topic_summary += f"{index}. {full_text}"
         url = submission.url
+        op = submission.author.name
+        fetch_reddit_user_info(op)
 
         message = TextBlob(full_text)
 
@@ -106,6 +108,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
         post_data = {
             "title": title,
             "url": url,
+            "op":op,
             # "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
@@ -118,7 +121,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(posts_info)
     aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
-    return posts_info, aggregate_polarity, aggregate_subjectivity
+    return popularity_change, posts_info, aggregate_polarity, aggregate_subjectivity
 
 print(fetch_post_info("hachiware"))
 
@@ -187,14 +190,16 @@ def analyze():
         return jsonify({"error": "Please provide a topic"}), 400
     sort = request.args.get('sort')
     if sort != 'hot':
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
+        popularity_change, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
     else:
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
+        popularity_change, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
     
+
     return jsonify({
         'topic': topic,
         'sort': sort,
         'posts': posts,
+        'popularity_change': popularity_change,
         'aggregate_polarity': aggregate_polarity,
         'aggregate_subjectivity': aggregate_subjectivity
     })
