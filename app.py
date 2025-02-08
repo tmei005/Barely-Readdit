@@ -11,6 +11,8 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
+from collections import Counter
+
 app = Flask(__name__, static_folder='client/src')
 CORS(app)
 
@@ -45,21 +47,23 @@ def summarize(text, type, image=None):
     )
     return response.text
     
-def fetch_post_info(topic, sort='hot', limit=10):
+def fetch_post_info(topic, sort='hot', limit=2):
     """
     Fetch Reddit posts based on a topic.
     """
     posts_info = []
+    topic_summary = ""
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
 
     image_extensions = [".jpeg", ".png"]
 
-    # TODO: check if the post has an image or not, find a way to analyze it and include it in the summary
-    for submission in reddit.subreddit('all').search(topic, sort, limit=limit):
+    # TODO: check if the post is solely image based, if so then 
+    for index, submission in enumerate(reddit.subreddit('all').search(topic, sort, limit=limit)):
         title = submission.title
         full_text = title + " " + submission.selftext
+        topic_summary = f"{index}. {full_text}"
         url = submission.url
 
         message = TextBlob(full_text)
@@ -67,24 +71,8 @@ def fetch_post_info(topic, sort='hot', limit=10):
         polarity = message.sentiment.polarity
         subjectivity = message.sentiment.subjectivity
 
-        # has_media_metadata = False
-        # if hasattr(submission, 'media_metadata'):
-        #     has_media_metadata = True
-
-        # # specifically for content posts
-        # if(submission.selftext == ""):
-        #     if has_media_metadata:
-        #         for image_data in submission.media_metadata:
-        #             image_url = image_data["s"]["u"]  
-        #             print(f"Image URL: {image_url}") 
-        #     # summary = summarize(full_text)
-        # else:
-
-        # CASES: gallery (slideshow of photos), external link to a news article
-        # photo image, or video
-
         summary = summarize(full_text, "post")
-        # print(summary)
+        print(summary)
 
         aggregate_polarity += polarity
         aggregate_subjectivity += subjectivity
@@ -99,15 +87,17 @@ def fetch_post_info(topic, sort='hot', limit=10):
 
         posts_info.append(post_data)
 
+
     aggregate_polarity = aggregate_polarity/len(posts_info)
     aggregate_subjectivity = aggregate_subjectivity/len(posts_info)
     return posts_info, aggregate_polarity, aggregate_subjectivity
 
-print(fetch_post_info("pikachu", "new"))
-
 def fetch_reddit_user_info(username, limit=20):
     user_info = []
+    subreddits = {}
+
     user = reddit.redditor(username)
+    user_info.append(user.icon_img)
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -121,21 +111,28 @@ def fetch_reddit_user_info(username, limit=20):
         aggregate_polarity += polarity
         aggregate_subjectivity += subjectivity
         
+        
+        if comment.subreddit.display_name in subreddits:
+            subreddits[comment.subreddit.display_name] += 1
+        else:
+            subreddits[comment.subreddit.display_name] = 1
+
         comment_data = {
             "polarity": polarity,
-            "subjectivity": subjectivity
-
+            "subjectivity": subjectivity,
         }
         user_info.append(comment_data)
-
+        
+    top_subreddits = Counter(subreddits)
+    if(not top_subreddits):
+        top_3_subreddits = []
+    else:
+        top_3_subreddits = top_subreddits.most_common(3) 
+    
     aggregate_polarity = aggregate_polarity/len(user_info)
     aggregate_subjectivity = aggregate_subjectivity/len(user_info)
 
-    return user_info, aggregate_polarity, aggregate_subjectivity
-
-# test case:
-# print(fetch_reddit_user_info("segcymf"))
-
+    return user_info, top_3_subreddits, aggregate_polarity, aggregate_subjectivity
 
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
