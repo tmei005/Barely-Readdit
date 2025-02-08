@@ -9,7 +9,6 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -179,8 +178,6 @@ def fetch_reddit_user_info(username, limit=20):
     return username, icon_url, comments, top_3_subreddits, user_average_polarity, user_average_subjectivity
 
 # print(fetch_reddit_user_info("segcymf"))
-
-def subreddit_matcher(topic, topic_summary):
     
 
 
