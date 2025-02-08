@@ -14,7 +14,8 @@ import thumbsDown1 from "./assets/thumbs-down.png";
 import thumbsNeutral2 from "./assets/thumbs-neutral.png";
 import thumbsNeutral from "./assets/thumbs-neutral.png";
 import topLine from "./assets/top-line.png";
-import subReddit from "./assets/subreddit.png"
+import subReddit from "./assets/subreddit.png";
+import magnifyingGlass from "./assets/magnifying-glass.svg";
 
 export const ContentPage = () => {
   const [topic, setTopic] = useState("");
@@ -155,9 +156,10 @@ export const ContentPage = () => {
 
               <img className="logo" alt="Logo" src={logo} />
             </div>
+            <img className="glass" alt = "Magnifying Glass" src={magnifyingGlass}/>
           </header>
-
-          {loading && <p id="loading">Loading...</p>}
+          
+          {loading && <p id="loading"></p>} 
 
           {error && <p>{error}</p>}
 

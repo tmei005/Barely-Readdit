@@ -213,7 +213,7 @@
   .content-page .post-3 {
     background-color: #f7f6eb;
     padding: 15px;
-    width: 943px;
+    width: 915px;
     padding-left: 90px;
   }
   
@@ -338,7 +338,7 @@
     position: absolute;
     top: 9px;
     width: 27px;
-  }
+}
   
   .content-page .num-wrapper {
     background-color: #ebe9d7;
@@ -398,8 +398,18 @@
     top: 95px;
     width: 1280px;
   }
+
+  .content-page .glass {
+    position: relative;
+    width: 18px;
+    left: 355px;
+    top: 22px;
+    filter: invert(45%) sepia(7%) saturate(193%) hue-rotate(202deg) brightness(92%) contrast(87%);
+  }
   
-  .content-page .search-bar {
+  .search-bar {
+    font-family: "Nunito-Regular", Helvetica;
+    font-size: 17px;
     background-color: #ebebeb;
     border: 1.5px solid;
     border-color: #8d8f94;
@@ -409,6 +419,17 @@
     position: absolute;
     top: 7px;
     width: 718px;
+    padding: 10px 41px;  /* Top/Bottom: 10px, Left/Right: 20px */
+    box-sizing: border-box;  /* makes it so that adding padding doesn't affect width of search bar*/
+  
+  }
+
+
+ .search-bar::placeholder {
+    font-family: "Nunito-Regular", Helvetica; 
+    font-size: 17px;
+    color: #9e9e9e; 
+    font-style: italic; 
   }
   
   .content-page .group {
