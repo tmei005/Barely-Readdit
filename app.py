@@ -111,7 +111,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
             "op": op,
             "title": title,
             "url": url,
-            # "summary": summary,
+            "summary": summary,
             "polarity": polarity,
             "subjectivity": subjectivity
         }
@@ -122,7 +122,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(topic_posts)
     aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
-    return topic_posts, aggregate_polarity, aggregate_subjectivity
+    return summary, topic_posts, aggregate_polarity, aggregate_subjectivity
 
 # print(fetch_post_info("hachiware"))
 
@@ -135,7 +135,7 @@ def fetch_reddit_user_info(username, limit=20):
 
     user = reddit.redditor(username)
     username = user.name
-    icon_url = user.icon_img
+    icon_url = reddit.redditor(username).icon_img
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -196,15 +196,17 @@ def analyze():
     if not topic:
         return jsonify({"error": "Please provide a topic"}), 400
     sort = request.args.get('sort')
+    popularity_change = get_topic_popularity(topic)
     if sort != 'hot':
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
+        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
     else:
-        posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
-    
+        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
     return jsonify({
         'topic': topic,
         'sort': sort,
+        'popularity_change':popularity_change,
         'posts': posts,
+        'topic_summary': summary,
         'aggregate_polarity': aggregate_polarity,
         'aggregate_subjectivity': aggregate_subjectivity
     })
