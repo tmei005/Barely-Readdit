@@ -1,12 +1,17 @@
 from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS  # Import CORS
 import praw
 from textblob import TextBlob
+from dotenv import load_dotenv
 # from flask_cors import CORS  # Import CORS
 # from src.reddit_api import fetch_reddit_posts
 # from src.sentiment_analysis import analyze_sentiment
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/src')
+CORS(app)
+
+load_dotenv()
 
 # Initialize Reddit API
 reddit = praw.Reddit(
@@ -41,11 +46,11 @@ def analyze_sentiment(post_title):
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory('client/src', 'index.html')
 
-@app.route('/static/<path:path>')
+@app.route('/src/<path:path>')
 def static_file(path):
-    return send_from_directory('static', path)
+    return send_from_directory('client/src', path)
 
 @app.route('/analyze', methods=['GET'])
 def analyze():
