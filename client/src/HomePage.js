@@ -3,6 +3,15 @@ import AnimatedFrame from './AnimatedFrame.js';
 import "./HomePage.css";
 
 export const HomePage = () => {
+  const [topic, setTopic] = useState("");
+  // Function to handle Enter key press
+ const handleKeyDown = (event) => {
+   if (event.key === 'Enter') {
+     console.log("Enter pressed. Current topic:", topic);
+     // You can add further functionality here if needed
+   }
+ };
+
   return (
     <div className="home-page">
       <div className="div">
@@ -82,9 +91,22 @@ export const HomePage = () => {
 
         <div className="text-wrapper-4">Welcome to BarelyReaddit!</div>
 
-        <div className="overlap-group">
-          <div className="text-wrapper-5">Search BarelyReaddit...</div>
-        </div>
+        <div className="overlap-2">
+         <header className="header">
+           <input
+             className='search-bar-home'
+             type="text"
+             id="topicInput"
+             value={topic}
+             onChange={(e) => setTopic(e.target.value)}  // Update topic on input change
+             onKeyDown={handleKeyDown}  // Trigger function on Enter key press
+             placeholder="Search BarelyReaddit"
+           />
+         </header>
+
+
+       </div>
+
       </div>
     </div>
   );
