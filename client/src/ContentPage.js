@@ -64,7 +64,9 @@ export const ContentPage = () => {
         <div key={index} className="post-3">
 
         {/* Dynamic Post Content */}
-        <div className="text-wrapper-2">{post.title}</div>
+        <a class="title-link" href="https://www.reddit.com/r/Lexus/comments/1iku94s/how_much_does_your_lexus_dealership_charge_for_an/" target="_blank">
+          <div className="text-wrapper-2">{post.title}</div>
+        </a>
         <div className="text-wrapper">{post.summary}</div>    
 
         {/* Icon Section */}
@@ -153,9 +155,10 @@ export const ContentPage = () => {
               placeholder="Search BarelyReaddit"
             />
             <div className="group">
-              <div className="text-wrapper-7">BarelyReaddit</div>
-
-              <img className="logo" alt="Logo" src={logo} />
+              <a href="/">
+                <div className="text-wrapper-7">BarelyReaddit</div>
+                <img className="logo" alt="Logo" src={logo} />  
+              </a>
             </div>
             <img className="glass" alt = "Magnifying Glass" src={magnifyingGlass}/>
           </header>

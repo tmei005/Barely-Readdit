@@ -74,453 +74,468 @@
   object-fit: contain;
 }
 
-  .content-page .thumbs-down {
-    height: 23px;
-    left: 8px;
-    object-fit: cover;
-    position: absolute;
-    top: 11px;
-    width: 26px;
-  }
-  
-  .content-page .text-wrapper-2 {
-    color: #382020;
-    font-family: "Nunito-Bold", Helvetica;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 0;
-    line-height: normal;
-
-    position: relative;
-    word-wrap: break-word; 
-    overflow: hidden;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-    line-clamp: 2; 
-    -webkit-box-orient: vertical;
-
-    text-overflow: ellipsis;    /* Ensure the ellipsis is displayed */
-    white-space: normal;  
-
-    width: 100%;
-    top: 10px;
-  }
-
-  .content-page .text-wrapper {
-    color: #382020;
-    font-family: "Nunito-Regular", Helvetica;
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: normal;
-    position: relative;
-    width: 830px;
-    margin-top: 20px
-  }
-  
-  .content-page .text-wrapper-3 {
-    color: #382020;
-    font-family: "Nunito-LightItalic", Helvetica;
-    font-size: 18px;
-    font-style: italic;
-    font-weight: 300;
-    left: 20px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 0;
-    width: 278px;
-  }
-  
-  .content-page .overlap {
-    height: 461px;
-    left: 90px;
-    position: absolute;
-    top: 482px;
-    width: 1024px;
-  }
-  
-  .content-page .post-2 {
-    height: 224px;
-    left: 81px;
-    position: absolute;
-    top: 237px;
-    width: 943px;
-  }
-  
-  .content-page .thumbs-neutral {
-    height: 29px;
-    left: 10px;
-    object-fit: cover;
-    position: absolute;
-    top: 8px;
-    width: 24px;
-  }
-
-  .content-page .box1 {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 30px;
-    position: absolute;
-    top: 192px;
-  }
-
-  .content-page .box2 {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 143px;
-    position: absolute;
-    top: 192px;
-  }
-
-  .content-page .box3 {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 240px;
-    position: absolute;
-    top: 192px;
-  }
-  
-  .box1 .subreddit-bubble1 {
-    background-color: #c7c6bc;
-    border-radius: 45px;
-    height: 33px;
-    width: 95px;
-  
-    position: absolute;  
-    top: 0;
-    left: 190px;  
-  }
-
-  .box2 .subreddit-bubble2 {
-    background-color: #c7c6bc;
-    border-radius: 45px;
-    height: 33px;
-    width: 80px;
-  
-    position: absolute;  
-    top: 0;
-    left: 190px;  
-  }
-  
-  .box3 .subreddit-bubble3 {
-    background-color: #c7c6bc;
-    border-radius: 45px;
-    height: 33px;
-    width: 80px;
-  
-    position: absolute;  
-    top: 0;
-    left: 190px;  
-  }
-  
-  .content-page .post-3 {
-    background-color: #f7f6eb;
-    padding: 15px;
-    width: 915px;
-    padding-left: 90px;
-  }
-  
-  
-  .content-page .tooltip {
-    height: 131px;
-    left: 0;
-    position: absolute;
-    top: 215px;
-    width: 230px;
-  }
-  
-  .content-page .overlap-group {
-    height: 131px;
-    position: relative;
-  }
-  
-  .content-page .rectangle {
-    background-color: #d8deed;
-    border-radius: 11px;
-    height: 109px;
-    left: 0;
-    position: absolute;
-    top: 22px;
-    width: 230px;
-  }
-  
-  .content-page .vector {
-    height: 25px;
-    left: 96px;
-    position: absolute;
-    top: 0;
-    width: 37px;
-  }
-  
-  .content-page .sentiment-this-post {
-    color: #000000;
-    font-family: "Nunito-Bold", Helvetica;
-    font-size: 20px;
-    font-weight: 400;
-    left: 24px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    text-align: center;
-    top: 251px;
-    width: 181px;
-  }
-  
-  .content-page .span {
-    font-weight: 700;
-    text-decoration: underline;
-  }
-  
-  .content-page .text-wrapper-4 {
-    font-family: "Nunito-Regular", Helvetica;
-  }
-  
-  .content-page .top-line {
-    height: 1px;
-    left: 0;
-    object-fit: cover;
-    position: relative;
-    top: 427px;
-    width: 1280px;
-  }
-  
-  .content-page .summary-block {
-    height: 246px;
-    left: 114px;
-    position: absolute;
-    top: 158px;
-    width: 1047px;
-  }
-  
-  .content-page .overlap-group-2 {
-    background-image: url(./assets/summary-dotted-BG.png);
-    background-size: 100% 100%;
-    height: 254px;
-    left: -4px;
-    position: relative;
-    width: 1051px;
-  }
-  
-  .content-page .div-wrapper {
-    background-image: url(./assets/summary-bar-BG.png);
-    background-size: 100% 100%;
-    height: 53px;
-    left: 4px;
-    position: absolute;
-    top: 0;
-    width: 1043px;
-  }
-  
-  .content-page .text-wrapper-5 {
-    color: #382020;
-    font-family: "Quicksand-Bold", Helvetica;
-    font-size: 26px;
-    font-weight: 700;
-    left: 401px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    text-align: center;
-    top: 9px;
-    width: 237px;
-  }
-  
-  .content-page .popularity-icon {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 126px;
-    position: absolute;
-    top: 187px;
-    width: 43px;
-  }
-  
-  .content-page .arrow-up {
-    height: 25px;
-    left: 7px;
-    position: absolute;
-    top: 9px;
-    width: 27px;
+.content-page .thumbs-down {
+  height: 23px;
+  left: 8px;
+  object-fit: cover;
+  position: absolute;
+  top: 11px;
+  width: 26px;
 }
-  
-  .content-page .num-wrapper {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 74px;
-    position: absolute;
-    top: 187px;
-    width: 43px;
-  }
-  
-  .content-page .thumbs-neutral-wrapper {
-    background-color: #ebe9d7;
-    border-radius: 45px;
-    height: 43px;
-    left: 20px;
-    position: absolute;
-    top: 187px;
-    width: 43px;
-  }
-  
-  .content-page .text-wrapper-6 {
-    color: #382020;
-    font-family: "Nunito-Regular", Helvetica;
-    font-size: 22px;
-    font-weight: 400;
-    left: 22px;
-    letter-spacing: 0;
-    line-height: normal;
-    word-wrap: break-word;  /* Ensures long words break properly */
-    position: absolute;
-    top: 69px;
-    width: auto;
-  }
-  
-  .content-page .overlap-2 {
-    height: 96px;
-    left: 0;
-    position: absolute;
-    top: 28px;
-    width: 1280px;
-  }
-  
-  .content-page .header {
-    background-color: transparent;
-    height: 96px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 1280px;
-  }
-  
-  .content-page .divider {
-    height: 1px;
-    left: 0;
-    object-fit: cover;
-    position: absolute;
-    top: 95px;
-    width: 1280px;
-  }
 
-  .content-page .glass {
-    position: relative;
-    width: 18px;
-    left: 355px;
-    top: 22px;
-    filter: invert(45%) sepia(7%) saturate(193%) hue-rotate(202deg) brightness(92%) contrast(87%);
-  }
-  
-  .search-bar {
-    font-family: "Nunito-Regular", Helvetica;
-    font-size: 17px;
-    background-color: #ebebeb;
-    border: 1.5px solid;
-    border-color: #8d8f94;
-    border-radius: 45px;
-    height: 48px;
-    left: 338px;
-    position: absolute;
-    top: 7px;
-    width: 718px;
-    padding: 10px 41px;  /* Top/Bottom: 10px, Left/Right: 20px */
-    box-sizing: border-box;  /* makes it so that adding padding doesn't affect width of search bar*/
-  
-  }
+.content-page .text-wrapper-2 {
+  color: #382020;
+  font-family: "Nunito-Bold", Helvetica;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+
+  position: relative;
+  word-wrap: break-word; 
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2; 
+  -webkit-box-orient: vertical;
+
+  text-overflow: ellipsis;    /* Ensure the ellipsis is displayed */
+  white-space: normal;  
+
+  width: 100%;
+  top: 10px;
+}
+
+.title-link {
+  text-decoration: none;
+}
+
+.title-link:hover {
+  text-decoration: underline;
+  text-decoration-color: #7e7e58;
+  cursor: pointer;
+}
+
+.title-link:active {
+  text-decoration: underline;
+  text-decoration-color: #7e7e58;
+  cursor: pointer;
+}
+
+.content-page .text-wrapper {
+  color: #382020;
+  font-family: "Nunito-Regular", Helvetica;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: 830px;
+  margin-top: 20px
+}
+
+.content-page .text-wrapper-3 {
+  color: #382020;
+  font-family: "Nunito-LightItalic", Helvetica;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  left: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+  width: 278px;
+}
+
+.content-page .overlap {
+  height: 461px;
+  left: 90px;
+  position: absolute;
+  top: 482px;
+  width: 1024px;
+}
+
+.content-page .post-2 {
+  height: 224px;
+  left: 81px;
+  position: absolute;
+  top: 237px;
+  width: 943px;
+}
+
+.content-page .thumbs-neutral {
+  height: 29px;
+  left: 10px;
+  object-fit: cover;
+  position: absolute;
+  top: 8px;
+  width: 24px;
+}
+
+.content-page .box1 {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 30px;
+  position: absolute;
+  top: 192px;
+}
+
+.content-page .box2 {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 143px;
+  position: absolute;
+  top: 192px;
+}
+
+.content-page .box3 {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 240px;
+  position: absolute;
+  top: 192px;
+}
+
+.box1 .subreddit-bubble1 {
+  background-color: #c7c6bc;
+  border-radius: 45px;
+  height: 33px;
+  width: 95px;
+
+  position: absolute;  
+  top: 0;
+  left: 190px;  
+}
+
+.box2 .subreddit-bubble2 {
+  background-color: #c7c6bc;
+  border-radius: 45px;
+  height: 33px;
+  width: 80px;
+
+  position: absolute;  
+  top: 0;
+  left: 190px;  
+}
+
+.box3 .subreddit-bubble3 {
+  background-color: #c7c6bc;
+  border-radius: 45px;
+  height: 33px;
+  width: 80px;
+
+  position: absolute;  
+  top: 0;
+  left: 190px;  
+}
+
+.content-page .post-3 {
+  background-color: #f7f6eb;
+  padding: 15px;
+  width: 915px;
+  padding-left: 90px;
+}
 
 
- .search-bar::placeholder {
-    font-family: "Nunito-Regular", Helvetica; 
-    font-size: 17px;
-    color: #9e9e9e; 
-    font-style: italic; 
-  }
-  
-  .content-page .group {
-    height: 64px;
-    left: 48px;
-    position: absolute;
-    top: 0;
-    width: 274px;
-  }
-  
-  .content-page .text-wrapper-7 {
-    color: #ff855a;
-    font-family: "Nunito-Bold", Helvetica;
-    font-size: 28px;
-    font-weight: 700;
-    left: 71px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 16px;
-    white-space: nowrap;
-    width: 201px;
-  }
-  
-  .content-page .logo {
-    height: 64px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 64px;
-  }
-  
-  .content-page .overlap-wrapper {
-    height: 47px;
-    left: 1084px;
-    position: absolute;
-    top: 8px;
-    width: 148px;
-  }
-  
-  .content-page .overlap-3 {
-    background-color: #ebebeb;
-    border-radius: 23.5px;
-    height: 47px;
-    position: relative;
-    width: 146px;
-  }
-  
-  .content-page .text-wrapper-8 {
-    color: #929191;
-    font-family: "Nunito-BoldItalic", Helvetica;
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 700;
-    height: 28px;
-    left: 19px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 9px;
-    width: 90px;
-  }
-  
-  .content-page .polygon {
-    height: 11px;
-    left: 117px;
-    position: absolute;
-    top: 19px;
-    width: 11px;
-  }
-  
-  .content-page .text-wrapper-9 {
-    color: #9e9e9e;
-    font-family: "Nunito-SemiBoldItalic", Helvetica;
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 600;
-    height: 27px;
-    left: 360px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 17px;
-  }
-  
+.content-page .tooltip {
+  height: 131px;
+  left: 0;
+  position: absolute;
+  top: 215px;
+  width: 230px;
+}
+
+.content-page .overlap-group {
+  height: 131px;
+  position: relative;
+}
+
+.content-page .rectangle {
+  background-color: #d8deed;
+  border-radius: 11px;
+  height: 109px;
+  left: 0;
+  position: absolute;
+  top: 22px;
+  width: 230px;
+}
+
+.content-page .vector {
+  height: 25px;
+  left: 96px;
+  position: absolute;
+  top: 0;
+  width: 37px;
+}
+
+.content-page .sentiment-this-post {
+  color: #000000;
+  font-family: "Nunito-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 251px;
+  width: 181px;
+}
+
+.content-page .span {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.content-page .text-wrapper-4 {
+  font-family: "Nunito-Regular", Helvetica;
+}
+
+.content-page .top-line {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: relative;
+  top: 427px;
+  width: 1280px;
+}
+
+.content-page .summary-block {
+  height: 246px;
+  left: 114px;
+  position: absolute;
+  top: 158px;
+  width: 1047px;
+}
+
+.content-page .overlap-group-2 {
+  background-image: url(./assets/summary-dotted-BG.png);
+  background-size: 100% 100%;
+  height: 254px;
+  left: -4px;
+  position: relative;
+  width: 1051px;
+}
+
+.content-page .div-wrapper {
+  background-image: url(./assets/summary-bar-BG.png);
+  background-size: 100% 100%;
+  height: 53px;
+  left: 4px;
+  position: absolute;
+  top: 0;
+  width: 1043px;
+}
+
+.content-page .text-wrapper-5 {
+  color: #382020;
+  font-family: "Quicksand-Bold", Helvetica;
+  font-size: 26px;
+  font-weight: 700;
+  left: 401px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 9px;
+  width: 237px;
+}
+
+.content-page .popularity-icon {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 126px;
+  position: absolute;
+  top: 187px;
+  width: 43px;
+}
+
+.content-page .arrow-up {
+  height: 25px;
+  left: 7px;
+  position: absolute;
+  top: 9px;
+  width: 27px;
+}
+
+.content-page .num-wrapper {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 74px;
+  position: absolute;
+  top: 187px;
+  width: 43px;
+}
+
+.content-page .thumbs-neutral-wrapper {
+  background-color: #ebe9d7;
+  border-radius: 45px;
+  height: 43px;
+  left: 20px;
+  position: absolute;
+  top: 187px;
+  width: 43px;
+}
+
+.content-page .text-wrapper-6 {
+  color: #382020;
+  font-family: "Nunito-Regular", Helvetica;
+  font-size: 22px;
+  font-weight: 400;
+  left: 22px;
+  letter-spacing: 0;
+  line-height: normal;
+  word-wrap: break-word;  /* Ensures long words break properly */
+  position: absolute;
+  top: 69px;
+  width: auto;
+}
+
+.content-page .overlap-2 {
+  height: 96px;
+  left: 0;
+  position: absolute;
+  top: 28px;
+  width: 1280px;
+}
+
+.content-page .header {
+  background-color: transparent;
+  height: 96px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1280px;
+}
+
+.content-page .divider {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 95px;
+  width: 1280px;
+}
+
+.content-page .glass {
+  position: relative;
+  width: 18px;
+  left: 355px;
+  top: 22px;
+  filter: invert(45%) sepia(7%) saturate(193%) hue-rotate(202deg) brightness(92%) contrast(87%);
+}
+
+.search-bar {
+  font-family: "Nunito-Regular", Helvetica;
+  font-size: 17px;
+  background-color: #ebebeb;
+  border: 1.5px solid;
+  border-color: #8d8f94;
+  border-radius: 45px;
+  height: 48px;
+  left: 338px;
+  position: absolute;
+  top: 7px;
+  width: 718px;
+  padding: 10px 41px;  /* Top/Bottom: 10px, Left/Right: 20px */
+  box-sizing: border-box;  /* makes it so that adding padding doesn't affect width of search bar*/
+
+}
+
+
+.search-bar::placeholder {
+  font-family: "Nunito-Regular", Helvetica; 
+  font-size: 17px;
+  color: #9e9e9e; 
+  font-style: italic; 
+}
+
+.content-page .group {
+  height: 64px;
+  left: 48px;
+  position: absolute;
+  top: 0;
+  width: 274px;
+}
+
+.content-page .text-wrapper-7 {
+  color: #ff855a;
+  font-family: "Nunito-Bold", Helvetica;
+  font-size: 28px;
+  font-weight: 700;
+  left: 71px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 16px;
+  white-space: nowrap;
+  width: 201px;
+}
+
+.content-page .logo {
+  height: 64px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 64px;
+}
+
+.content-page .overlap-wrapper {
+  height: 47px;
+  left: 1084px;
+  position: absolute;
+  top: 8px;
+  width: 148px;
+}
+
+.content-page .overlap-3 {
+  background-color: #ebebeb;
+  border-radius: 23.5px;
+  height: 47px;
+  position: relative;
+  width: 146px;
+}
+
+.content-page .text-wrapper-8 {
+  color: #929191;
+  font-family: "Nunito-BoldItalic", Helvetica;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 700;
+  height: 28px;
+  left: 19px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 9px;
+  width: 90px;
+}
+
+.content-page .polygon {
+  height: 11px;
+  left: 117px;
+  position: absolute;
+  top: 19px;
+  width: 11px;
+}
+
+.content-page .text-wrapper-9 {
+  color: #9e9e9e;
+  font-family: "Nunito-SemiBoldItalic", Helvetica;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 600;
+  height: 27px;
+  left: 360px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 17px;
+}
