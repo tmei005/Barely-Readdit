@@ -26,21 +26,23 @@ reddit = praw.Reddit(
 # Initialize Gemini API
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-def summarize(text, type, image=None):
+fetch_called = False
+
+def summarize(text, type, topic):
     """
     Summarizes the given message
     """
 
     if type == "post":
-        system_instruction="Provide a concise summary of the post and focus on key points and main ideas:"
+        system_instruction=["Summarize the following inputted message directly within 2-3 sentences without mentioning the person who posted the message. Don't use filler phrases such as 'the following summarizes,' 'one user shared,' 'the next shared their,' or 'another user discussed.' Focus on the main points and experiences mentioned."]
     elif type == "topic":
         # make it better
-        system_instruction="Provide a concise summary of the numbered list of posts provided and focus on key points and main ideas that correlate to the overarching topic:"
+        system_instruction = f"Briefly define the topic based on popular definitions and examples: {topic}. Then, summarize all the Reddit posts given of what the user should expect to see within 2 sentences."
 
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         config=types.GenerateContentConfig(
-        system_instruction=["Summarize the following inputted message:"]),
+        system_instruction=system_instruction),
         contents=[text]
     )
     return response.text
@@ -180,8 +182,67 @@ def fetch_reddit_user_info(username, limit=20):
 
     return username, icon_url, top_3_subreddits, user_average_polarity, user_average_subjectivity
 
-# def subreddit_matcher(topic, topic_summary):    
-    
+# Get posts
+def fetch_post_info(topic, sort='hot'):
+    """
+    Fetch Reddit posts based on a topic.
+    """
+    global fetch_called
+
+    topic_posts = []
+    topic_summary = ""
+
+    aggregate_polarity = 0
+    aggregate_subjectivity = 0
+    popularity_change = get_topic_popularity(topic)
+
+    image_extensions = [".jpeg", ".png"]
+
+    # TODO: check if the post is solely image based 
+    index = 0
+    for submission in reddit.subreddit('all').search(topic, sort):
+        if index == 5:
+            break
+        if(submission.selftext != ""):
+            title = submission.title
+            full_text = title + " " + submission.selftext
+            topic_summary += f"{index}. {full_text}"
+            url = submission.url
+            op = fetch_reddit_user_info(submission.author.name)
+
+            message = TextBlob(full_text)
+
+            polarity = message.sentiment.polarity
+            subjectivity = message.sentiment.subjectivity
+
+            summary = summarize(full_text, "post", topic)
+
+            aggregate_polarity += polarity
+            aggregate_subjectivity += subjectivity
+            
+            # Stores post data to dictionary
+            post_data = {
+                "subreddit": submission.subreddit.display_name,
+                "op": op,
+                "title": title,
+                "url": url,
+                "summary": summary,
+                "polarity": polarity,
+                "subjectivity": subjectivity
+            }
+            topic_posts.append(post_data)
+            index+=1
+
+
+    topic_summary = summarize(topic_summary, "topic", topic)
+
+    fetch_called = True
+
+    # Calculates the average polarity and subjectivity of the user's comments
+    aggregate_polarity = aggregate_polarity/len(topic_posts)
+    aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
+    return topic_summary, topic_posts, aggregate_polarity, aggregate_subjectivity
+
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
 def index():
@@ -190,6 +251,11 @@ def index():
 @app.route('/src/<path:path>')
 def static_file(path):
     return send_from_directory('client/src', path)
+
+@app.route('/reset', methods=['POST'])
+def reset_fetch():
+    global fetch_called
+    fetch_called = False
 
 @app.route('/analyze', methods=['GET'])
 def analyze():
