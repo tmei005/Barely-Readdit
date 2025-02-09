@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom"; // Get query params
 import "./styles.css";
 import thumbsUp from "./assets/thumbs-up-regular.svg";
 import thumbsDown from "./assets/thumbs-down-regular.svg";
@@ -16,12 +17,20 @@ import subReddit from "./assets/subreddit.png";
 import magnifyingGlass from "./assets/magnifying-glass.svg";
 
 export const ContentPage = () => {
-  const [inputTopic, setInputTopic] = useState(""); // For input value
-  const [displayTopic, setDisplayTopic] = useState(""); // For topic displayed in text-wrapper-5
+  const [searchParams] = useSearchParams();
+  const initialTopic = searchParams.get("topic") || ""; // Get topic from URL or empty string
+  const [inputTopic, setInputTopic] = useState(initialTopic); // Local input state
+  const [displayTopic, setDisplayTopic] = useState(""); // Local display state
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [sort, setSort] = useState("hot"); // Default sort value
+
+  useEffect(() => {
+    if (initialTopic) {
+      handleAnalyze(initialTopic); // Run analysis on page load if topic exists
+    }
+  }, [initialTopic]); // Runs when the topic in URL changes
 
   const handleAnalyze = async () => {
     setLoading(true);
@@ -106,7 +115,7 @@ export const ContentPage = () => {
           <div className="summary-block">
             <div className="overlap-group-2">
               <div className="div-wrapper">
-                <div className="text-wrapper-5">{displayTopic}</div>
+                <div className="text-wrapper-5">{inputTopic}</div>
                 <div className="text-wrapper-6">{result.topic_summary}</div>
                 <div className="popularity-icon">
                   <img

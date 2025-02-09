@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import AnimatedFrame from './AnimatedFrame.js';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AnimatedFrame from "./AnimatedFrame.js";
 import "./HomePage.css";
 
 export const HomePage = () => {
   const [topic, setTopic] = useState("");
+  const navigate = useNavigate(); // Initialize navigation
+
   // Function to handle Enter key press
- const handleKeyDown = (event) => {
-   if (event.key === 'Enter') {
-     console.log("Enter pressed. Current topic:", topic);
-     // You can add further functionality here if needed
-   }
- };
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && topic.trim() != "") {
+      navigate(`/content?topic=${encodeURIComponent(topic)}`); // Redirect with topic
+    }
+  };
 
   return (
     <div className="home-page">
@@ -92,21 +94,18 @@ export const HomePage = () => {
         <div className="text-wrapper-4">Welcome to BarelyReaddit!</div>
 
         <div className="overlap-2">
-         <header className="header">
-           <input
-             className='search-bar-home'
-             type="text"
-             id="topicInput"
-             value={topic}
-             onChange={(e) => setTopic(e.target.value)}  // Update topic on input change
-             onKeyDown={handleKeyDown}  // Trigger function on Enter key press
-             placeholder="Search BarelyReaddit"
-           />
-         </header>
-
-
-       </div>
-
+          <header className="header">
+            <input
+              className="search-bar-home"
+              type="text"
+              id="topicInput"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)} // Update topic on input change
+              onKeyDown={handleKeyDown} // Trigger function on Enter key press
+              placeholder="Search BarelyReaddit"
+            />
+          </header>
+        </div>
       </div>
     </div>
   );
