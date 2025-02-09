@@ -49,18 +49,18 @@ def summarize(text, type, image=None):
 def get_topic_popularity(topic):
     """
     Fetch post count for a given topic over the last 14 days 
-    and calculate percentage change from the previous week.
+    and calculate percentage change from the previous day.
     """
     end_time = time.time()
-    one_week_ago = end_time - (7 * 24 * 60 * 60)
-    two_weeks_ago = one_week_ago - (7 * 24 * 60 * 60)
+    one_day_ago = end_time - (24 * 60 * 60)
+    two_days_ago = one_day_ago - (24 * 60 * 60)
 
     curr_count = 0
     last_count = 0
     for submission in reddit.subreddit("all").search(topic, sort="new"):  # Adjust limit as needed
-        if one_week_ago <= submission.created_utc <= end_time:
+        if one_day_ago <= submission.created_utc <= end_time:
             curr_count += 1
-        elif two_weeks_ago <= submission.created_utc <= one_week_ago:
+        elif two_days_ago <= submission.created_utc <= one_day_ago:
             last_count += 1
         else:
             break
@@ -78,6 +78,7 @@ def fetch_post_info(topic, sort='hot', limit=5):
     """
     topic_posts = []
     topic_summary = ""
+    subreddit_counts = Counter()
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -103,7 +104,9 @@ def fetch_post_info(topic, sort='hot', limit=5):
 
         aggregate_polarity += polarity
         aggregate_subjectivity += subjectivity
-        
+        # Count subreddit occurrences
+        subreddit_name = submission.subreddit.display_name
+        subreddit_counts[subreddit_name] += 1
         # Stores post data to dictionary
         post_data = {
             "subreddit": submission.subreddit.display_name,
@@ -115,13 +118,14 @@ def fetch_post_info(topic, sort='hot', limit=5):
             "subjectivity": subjectivity
         }
         topic_posts.append(post_data)
+    top_3_subreddits = [sub[0] for sub in subreddit_counts.most_common(3)]
 
     # topic_summary = summarize(topic_summary, "topic")
 
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(topic_posts)
     aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
-    return summary, topic_posts, aggregate_polarity, aggregate_subjectivity
+    return summary, topic_posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits
 
 # print(fetch_post_info("hachiware"))
 
@@ -189,25 +193,20 @@ def static_file(path):
 
 @app.route('/analyze', methods=['GET'])
 def analyze():
-    sort = 'hot'
+    sort = request.args.get('sort', 'hot')  # Get the sort parameter from request
     topic = request.args.get('topic')
-    sort = request.args.get('sort')
     if not topic:
         return jsonify({"error": "Please provide a topic"}), 400
-    sort = request.args.get('sort')
     popularity_change = get_topic_popularity(topic)
-    if sort != 'hot':
-        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
-    else:
-        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
+    summary, posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits = fetch_post_info(topic, sort)
     return jsonify({
         'topic': topic,
-        'sort': sort,
         'popularity_change':popularity_change,
         'posts': posts,
         'topic_summary': summary,
         'aggregate_polarity': aggregate_polarity,
-        'aggregate_subjectivity': aggregate_subjectivity
+        'aggregate_subjectivity': aggregate_subjectivity,
+        'top_3_subreddits': top_3_subreddits
     })
 
 if __name__ == '__main__':
