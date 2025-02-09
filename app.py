@@ -8,16 +8,6 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-
-import pandas as pd
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import re
-from sklearn.feature_extraction.text import TfidfVectorizer
-from rake_nltk import Rake
-from nltk.stem import WordNetLemmatizer
-
 from collections import Counter
 
 app = Flask(__name__, static_folder='client/src')
