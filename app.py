@@ -8,7 +8,6 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-# from textblob.wordnet import Synset
 
 from collections import Counter
 
@@ -52,18 +51,18 @@ def summarize(text, type, topic):
 def get_topic_popularity(topic):
     """
     Fetch post count for a given topic over the last 14 days 
-    and calculate percentage change from the previous week.
+    and calculate percentage change from the previous day.
     """
     end_time = time.time()
-    one_week_ago = end_time - (7 * 24 * 60 * 60)
-    two_weeks_ago = one_week_ago - (7 * 24 * 60 * 60)
+    one_day_ago = end_time - (24 * 60 * 60)
+    two_days_ago = one_day_ago - (24 * 60 * 60)
 
     curr_count = 0
     last_count = 0
     for submission in reddit.subreddit("all").search(topic, sort="new"):  # Adjust limit as needed
-        if one_week_ago <= submission.created_utc <= end_time:
+        if one_day_ago <= submission.created_utc <= end_time:
             curr_count += 1
-        elif two_weeks_ago <= submission.created_utc <= one_week_ago:
+        elif two_days_ago <= submission.created_utc <= one_day_ago:
             last_count += 1
         else:
             break
@@ -73,6 +72,64 @@ def get_topic_popularity(topic):
     else:
         popularity_change = 0  # Avoid division by zero
     return popularity_change
+        
+# Get posts
+def fetch_post_info(topic, sort='hot', limit=5):
+    """
+    Fetch Reddit posts based on a topic.
+    """
+    topic_posts = []
+    topic_summary = ""
+    subreddit_counts = Counter()
+
+    aggregate_polarity = 0
+    aggregate_subjectivity = 0
+    popularity_change = get_topic_popularity(topic)
+
+    image_extensions = [".jpeg", ".png"]
+
+    # TODO: check if the post is solely image based 
+    for index, submission in enumerate(reddit.subreddit('all').search(topic, sort, limit=limit)):
+        title = submission.title
+        full_text = title + " " + submission.selftext
+        topic_summary += f"{index}. {full_text}"
+        url = submission.url
+        op = fetch_reddit_user_info(submission.author.name)
+
+        message = TextBlob(full_text)
+
+        polarity = message.sentiment.polarity
+        subjectivity = message.sentiment.subjectivity
+
+        summary = summarize(full_text, "post")
+        # print(summary)
+
+        aggregate_polarity += polarity
+        aggregate_subjectivity += subjectivity
+        # Count subreddit occurrences
+        subreddit_name = submission.subreddit.display_name
+        subreddit_counts[subreddit_name] += 1
+        # Stores post data to dictionary
+        post_data = {
+            "subreddit": submission.subreddit.display_name,
+            "op": op,
+            "title": title,
+            "url": url,
+            "summary": summary,
+            "polarity": polarity,
+            "subjectivity": subjectivity
+        }
+        topic_posts.append(post_data)
+    top_3_subreddits = [sub[0] for sub in subreddit_counts.most_common(3)]
+
+    # topic_summary = summarize(topic_summary, "topic")
+
+    # Calculates the average polarity and subjectivity of the user's comments
+    aggregate_polarity = aggregate_polarity/len(topic_posts)
+    aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
+    return summary, topic_posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits
+
+# print(fetch_post_info("hachiware"))
 
 def fetch_reddit_user_info(username, limit=20):
     """
@@ -134,6 +191,7 @@ def fetch_post_info(topic, sort='hot'):
 
     topic_posts = []
     topic_summary = ""
+    subreddit_counts = Counter()
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -162,7 +220,9 @@ def fetch_post_info(topic, sort='hot'):
 
             aggregate_polarity += polarity
             aggregate_subjectivity += subjectivity
-            
+            # Count subreddit occurrences
+            subreddit_name = submission.subreddit.display_name
+            subreddit_counts[subreddit_name] += 1
             # Stores post data to dictionary
             post_data = {
                 "subreddit": submission.subreddit.display_name,
@@ -176,6 +236,7 @@ def fetch_post_info(topic, sort='hot'):
             topic_posts.append(post_data)
             index+=1
 
+        top_3_subreddits = [sub[0] for sub in subreddit_counts.most_common(3)]
 
     topic_summary = summarize(topic_summary, "topic", topic)
 
@@ -184,7 +245,7 @@ def fetch_post_info(topic, sort='hot'):
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(topic_posts)
     aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
-    return topic_summary, topic_posts, aggregate_polarity, aggregate_subjectivity
+    return topic_summary, topic_posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits
 
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
@@ -202,25 +263,20 @@ def reset_fetch():
 
 @app.route('/analyze', methods=['GET'])
 def analyze():
-    sort = 'hot'
+    sort = request.args.get('sort', 'hot')  # Get the sort parameter from request
     topic = request.args.get('topic')
-    sort = request.args.get('sort')
     if not topic:
         return jsonify({"error": "Please provide a topic"}), 400
-    sort = request.args.get('sort')
     popularity_change = get_topic_popularity(topic)
-    if sort != 'hot':
-        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic, sort)
-    else:
-        summary, posts, aggregate_polarity, aggregate_subjectivity = fetch_post_info(topic)
+    summary, posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits = fetch_post_info(topic, sort)
     return jsonify({
         'topic': topic,
-        'sort': sort,
         'popularity_change':popularity_change,
         'posts': posts,
         'topic_summary': summary,
         'aggregate_polarity': aggregate_polarity,
-        'aggregate_subjectivity': aggregate_subjectivity
+        'aggregate_subjectivity': aggregate_subjectivity,
+        'top_3_subreddits': top_3_subreddits
     })
 
 if __name__ == '__main__':
