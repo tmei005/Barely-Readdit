@@ -105,6 +105,7 @@
 
   width: 100%;
   top: 10px;
+  height: auto;
 }
 
 .title-link {
@@ -316,7 +317,8 @@
 .content-page .overlap-group-2 {
   background-image: url(./assets/summary-dotted-BG.png);
   background-size: 100% 100%;
-  height: 254px;
+  min-height: 254px;
+  height: auto;
   left: -4px;
   position: relative;
   width: 1051px;
@@ -325,25 +327,27 @@
 .content-page .div-wrapper {
   background-image: url(./assets/summary-bar-BG.png);
   background-size: 100% 100%;
-  height: 53px;
+  min-height: 53px;
+  height: auto;
   left: 4px;
-  position: absolute;
+  position: relative;
   top: 0;
   width: 1043px;
 }
 
 .content-page .text-wrapper-5 {
   color: #382020;
-  font-family: "Quicksand-Bold", Helvetica;
+  font-family: "Nunito-Bold", Helvetica;
   font-size: 26px;
   font-weight: 700;
-  left: 401px;
+  left: 50%;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
   text-align: center;
-  top: 9px;
-  width: 237px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
 }
 
 .content-page .popularity-icon {
@@ -389,13 +393,15 @@
   font-family: "Nunito-Regular", Helvetica;
   font-size: 22px;
   font-weight: 400;
-  left: 22px;
+  /* left: 22px; */
   letter-spacing: 0;
   line-height: normal;
   word-wrap: break-word;  /* Ensures long words break properly */
   position: absolute;
   top: 69px;
   width: auto;
+  padding-left: 22px;
+  padding-right: 22px;
 }
 
 .content-page .overlap-2 {
