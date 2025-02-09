@@ -191,6 +191,7 @@ def fetch_post_info(topic, sort='hot'):
 
     topic_posts = []
     topic_summary = ""
+    subreddit_counts = Counter()
 
     aggregate_polarity = 0
     aggregate_subjectivity = 0
@@ -219,7 +220,9 @@ def fetch_post_info(topic, sort='hot'):
 
             aggregate_polarity += polarity
             aggregate_subjectivity += subjectivity
-            
+            # Count subreddit occurrences
+            subreddit_name = submission.subreddit.display_name
+            subreddit_counts[subreddit_name] += 1
             # Stores post data to dictionary
             post_data = {
                 "subreddit": submission.subreddit.display_name,
@@ -233,6 +236,7 @@ def fetch_post_info(topic, sort='hot'):
             topic_posts.append(post_data)
             index+=1
 
+        top_3_subreddits = [sub[0] for sub in subreddit_counts.most_common(3)]
 
     topic_summary = summarize(topic_summary, "topic", topic)
 
@@ -241,7 +245,7 @@ def fetch_post_info(topic, sort='hot'):
     # Calculates the average polarity and subjectivity of the user's comments
     aggregate_polarity = aggregate_polarity/len(topic_posts)
     aggregate_subjectivity = aggregate_subjectivity/len(topic_posts)
-    return topic_summary, topic_posts, aggregate_polarity, aggregate_subjectivity
+    return topic_summary, topic_posts, aggregate_polarity, aggregate_subjectivity, top_3_subreddits
 
 # Serve the static files (HTML, CSS, JS)
 @app.route('/')
