@@ -149,7 +149,6 @@ export const ContentPage = () => {
                   src={result.top_3_subreddits[0]}
                 />
               </div>
-
               <div className="box2">
                 <img
                   className="subreddit-bubble2"
@@ -157,7 +156,6 @@ export const ContentPage = () => {
                   src={result.top_3_subreddits[1]}
                 />
               </div>
-
               <div className="box3">
                 <img
                   className="subreddit-bubble3"
