@@ -146,7 +146,7 @@ export const ContentPage = () => {
                 <img
                   className="subreddit-bubble1"
                   alt="subreddit-1"
-                  src={subReddit}
+                  src={result.top_3_subreddits[0]}
                 />
               </div>
 
@@ -154,7 +154,7 @@ export const ContentPage = () => {
                 <img
                   className="subreddit-bubble2"
                   alt="subreddit-2"
-                  src={subReddit}
+                  src={result.top_3_subreddits[1]}
                 />
               </div>
 
@@ -162,7 +162,7 @@ export const ContentPage = () => {
                 <img
                   className="subreddit-bubble3"
                   alt="subreddit-3"
-                  src={subReddit}
+                  src={result.top_3_subreddits[2]}
                 />
               </div>
             </div>
