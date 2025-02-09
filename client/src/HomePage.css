@@ -85,17 +85,29 @@
   top: 343px;
 }
 
-.home-page .overlap-group {
+.search-bar-home {
+  font-family: "Nunito-Regular", Helvetica;
+  font-size: 17px;
   background-color: #ebebeb;
   border: 1.5px solid;
-  border-color: #8d8f93;
+  border-color: #8d8f94;
   border-radius: 45px;
-  height: 48px;
-  left: 237px;
   position: absolute;
-  top: 242px;
+  height: 48px;
+  left: -140px;
+  top: 170px;
   width: 806px;
-}
+  padding: 2px 30px;  /* Top/Bottom: 10px, Left/Right: 20px */
+ }
+ 
+ 
+ .search-bar-home::placeholder {
+  font-family: "Nunito-Regular", Helvetica;
+  font-size: 17px;
+  color: #9e9e9e;
+  font-style: italic;
+ }
+ 
 
 .home-page .text-wrapper-5 {
   color: #9e9e9e;
